@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { Rnd } from "react-rnd";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, keyframes } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
@@ -18,6 +18,17 @@ interface WindowProps {
 
 const TOP_BAR_HEIGHT = 40;
 const MOBILE_PADDING = 16;
+
+const scaleIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
 
 function useViewportSize() {
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -46,82 +57,73 @@ export function Window({ window: windowState, children }: WindowProps) {
 
   const rndRef = useRef<Rnd>(null);
   const viewport = useViewportSize();
+  const [isMounting, setIsMounting] = useState(true);
 
-  if (!windowState.isOpen || windowState.isMinimized) {
+  useEffect(() => {
+    const timer = setTimeout(() => setIsMounting(false), 50);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!windowState.isOpen) {
     return null;
   }
 
   const isMaximized = windowState.isMaximized;
+  const isMinimized = windowState.isMinimized;
 
-  const clampedWidth = Math.min(
-    windowState.size.width,
-    viewport.width - MOBILE_PADDING * 2
-  );
-  const clampedHeight = Math.min(
-    windowState.size.height,
-    viewport.height - TOP_BAR_HEIGHT - MOBILE_PADDING
-  );
-  const clampedX = Math.min(
-    windowState.position.x,
-    Math.max(0, viewport.width - clampedWidth - MOBILE_PADDING)
-  );
-  const clampedY = Math.max(
-    TOP_BAR_HEIGHT,
-    Math.min(windowState.position.y, viewport.height - clampedHeight - MOBILE_PADDING)
-  );
+  let targetWidth = windowState.size.width;
+  let targetHeight = windowState.size.height;
+  let targetX = windowState.position.x;
+  let targetY = windowState.position.y;
 
   if (isMaximized) {
-    return (
-      <Box
-        onClick={() => focusWindow(windowState.id)}
-        sx={{
-          position: "fixed",
-          left: 0,
-          top: TOP_BAR_HEIGHT,
-          width: "100vw",
-          height: `calc(100vh - ${TOP_BAR_HEIGHT}px)`,
-          zIndex: windowState.zIndex,
-          display: "flex",
-          flexDirection: "column",
-          backgroundColor: colors.background.paper,
-          border: `1px solid ${colors.divider}`,
-          boxShadow: windowState.isFocused
-            ? `0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px ${colors.primary.main}40`
-            : "0 4px 16px rgba(0, 0, 0, 0.3)",
-          overflow: "hidden",
-        }}
-      >
-        <TitleBar
-          windowState={windowState}
-          isMaximized={isMaximized}
-          onMinimize={() => minimizeWindow(windowState.id)}
-          onMaximize={() => maximizeWindow(windowState.id)}
-          onClose={() => closeWindow(windowState.id)}
-        />
-        <Box
-          sx={{
-            flex: 1,
-            overflow: "auto",
-            backgroundColor: colors.background.default,
-          }}
-        >
-          {children}
-        </Box>
-      </Box>
-    );
+    targetWidth = viewport.width;
+    targetHeight = viewport.height - TOP_BAR_HEIGHT;
+    targetX = 0;
+    targetY = TOP_BAR_HEIGHT;
+  } else {
+    if (viewport.width > 0 && viewport.height > 0) {
+      targetWidth = Math.min(
+        targetWidth,
+        viewport.width - MOBILE_PADDING * 2
+      );
+      targetHeight = Math.min(
+        targetHeight,
+        viewport.height - TOP_BAR_HEIGHT - MOBILE_PADDING
+      );
+      targetX = Math.min(
+        targetX,
+        Math.max(0, viewport.width - targetWidth - MOBILE_PADDING)
+      );
+      targetY = Math.max(
+        TOP_BAR_HEIGHT,
+        Math.min(targetY, viewport.height - targetHeight - MOBILE_PADDING)
+      );
+    }
   }
+
+  const animationStyle = isMinimized
+    ? {
+        opacity: 0,
+        transform: `translate(${viewport.width / 2 - targetWidth / 2}px, ${viewport.height}px) scale(0.1)`,
+      }
+    : {
+        opacity: 1,
+        transform: "none",
+      };
 
   return (
     <Rnd
       ref={rndRef}
-      size={{ width: clampedWidth, height: clampedHeight }}
-      position={{ x: clampedX, y: clampedY }}
+      size={{ width: targetWidth, height: targetHeight }}
+      position={{ x: targetX, y: targetY }}
       minWidth={Math.min(300, viewport.width - MOBILE_PADDING * 2)}
       minHeight={200}
-      maxWidth={viewport.width - MOBILE_PADDING * 2}
-      maxHeight={viewport.height - TOP_BAR_HEIGHT - MOBILE_PADDING}
+      maxWidth={viewport.width}
+      maxHeight={viewport.height - TOP_BAR_HEIGHT}
       bounds="window"
       dragHandleClassName="window-drag-handle"
+      disableDragging={isMaximized || isMinimized}
       onDragStart={() => focusWindow(windowState.id)}
       onDrag={(_e, d) => {
         if (d.y < TOP_BAR_HEIGHT) {
@@ -141,17 +143,24 @@ export function Window({ window: windowState, children }: WindowProps) {
       }}
       style={{
         zIndex: windowState.zIndex,
+        transition: isMounting ? "none" : "all 0.4s cubic-bezier(0.2, 0.9, 0.2, 1)",
+        pointerEvents: isMinimized ? "none" : "auto",
+        ...animationStyle,
       }}
-      enableResizing={{
-        top: true,
-        right: true,
-        bottom: true,
-        left: true,
-        topRight: true,
-        bottomRight: true,
-        bottomLeft: true,
-        topLeft: true,
-      }}
+      enableResizing={
+        isMaximized || isMinimized
+          ? false
+          : {
+              top: true,
+              right: true,
+              bottom: true,
+              left: true,
+              topRight: true,
+              bottomRight: true,
+              bottomLeft: true,
+              topLeft: true,
+            }
+      }
     >
       <Box
         onClick={() => focusWindow(windowState.id)}
@@ -161,12 +170,14 @@ export function Window({ window: windowState, children }: WindowProps) {
           display: "flex",
           flexDirection: "column",
           backgroundColor: colors.background.paper,
-          borderRadius: "8px",
-          border: `1px solid ${colors.divider}`,
+          borderRadius: isMaximized ? 0 : "8px",
+          border: isMaximized ? "none" : `1px solid ${colors.divider}`,
+          borderTop: isMaximized ? `1px solid ${colors.divider}` : `1px solid ${colors.divider}`,
           boxShadow: windowState.isFocused
             ? `0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px ${colors.primary.main}40`
             : "0 4px 16px rgba(0, 0, 0, 0.3)",
           overflow: "hidden",
+          animation: isMounting ? `${scaleIn} 0.4s cubic-bezier(0.2, 0.9, 0.2, 1)` : "none",
         }}
       >
         <TitleBar
@@ -236,9 +247,9 @@ function TitleBar({
           height: "100%",
           display: "flex",
           alignItems: "center",
-          cursor: "grab",
+          cursor: isMaximized ? "default" : "grab",
           "&:active": {
-            cursor: "grabbing",
+            cursor: isMaximized ? "default" : "grabbing",
           },
         }}
       >
