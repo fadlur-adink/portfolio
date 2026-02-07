@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import ThemeRegistry from "@/lib/theme-registry";
-import { ClientLayout } from "@/components/layout";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
@@ -17,9 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeRegistry>
-          <ClientLayout>{children}</ClientLayout>
-        </ThemeRegistry>
+        <ThemeRegistry>{children}</ThemeRegistry>
       </body>
     </html>
   );

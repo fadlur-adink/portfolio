@@ -1,19 +1,5 @@
-import {
-  HeroSection,
-  QuoteSection,
-  ProjectsSection,
-  AboutSection,
-  ContactsSection,
-} from "@/components/sections";
+import DesktopLayout from "@/components/layout/desktop-layout";
 
 export default function Home() {
-  return (
-    <>
-      <HeroSection />
-      <QuoteSection />
-      <ProjectsSection />
-      <AboutSection />
-      <ContactsSection />
-    </>
-  );
+  return <DesktopLayout />;
 }
