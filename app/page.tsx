@@ -1,8 +1,10 @@
-import HeroSection from './components/HeroSection';
-import QuoteSection from './components/QuoteSection';
-import ProjectsSection from './components/ProjectsSection';
-import AboutSection from './components/AboutSection';
-import ContactsSection from './components/ContactsSection';
+import {
+  HeroSection,
+  QuoteSection,
+  ProjectsSection,
+  AboutSection,
+  ContactsSection,
+} from "@/components/sections";
 
 export default function Home() {
   return (

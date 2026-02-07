@@ -1,26 +1,26 @@
 import type { Metadata } from "next";
-import ThemeRegistry from "./theme/ThemeRegistry";
+import ThemeRegistry from "@/lib/theme-registry";
+import { ClientLayout } from "@/components/layout";
+import { siteConfig } from "@/config/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-	title: "Fadlur Rahman | Front-end Developer",
-	description: "Portfolio of front-end developer",
+  title: siteConfig.title,
+  description: siteConfig.description,
 };
 
-import ClientLayout from "./components/ClientLayout";
-
 export default function RootLayout({
-	children,
+  children,
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-	return (
-		<html lang="en">
-			<body>
-				<ThemeRegistry>
-					<ClientLayout>{children}</ClientLayout>
-				</ThemeRegistry>
-			</body>
-		</html>
-	);
+  return (
+    <html lang="en">
+      <body>
+        <ThemeRegistry>
+          <ClientLayout>{children}</ClientLayout>
+        </ThemeRegistry>
+      </body>
+    </html>
+  );
 }

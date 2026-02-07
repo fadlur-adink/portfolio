@@ -2,6 +2,7 @@
 
 import { createTheme } from '@mui/material/styles';
 import { Inter, JetBrains_Mono } from 'next/font/google';
+import { colors } from './colors';
 
 const inter = Inter({
   weight: ['300', '400', '500', '700'],
@@ -19,17 +20,17 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     background: {
-      default: '#1e1f24',
-      paper: '#24262d',
+      default: colors.background.default,
+      paper: colors.background.paper,
     },
     primary: {
-      main: '#a855f7',
+      main: colors.primary.main,
     },
     text: {
-      primary: '#ffffff',
-      secondary: '#9ca3af',
+      primary: colors.text.primary,
+      secondary: colors.text.secondary,
     },
-    divider: 'rgba(255,255,255,0.08)',
+    divider: colors.divider,
   },
   typography: {
     fontFamily: inter.style.fontFamily,
@@ -65,14 +66,14 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          scrollbarColor: '#a855f7 #1e1f24',
+          scrollbarColor: `${colors.primary.main} ${colors.background.default}`,
           '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
-            backgroundColor: '#1e1f24',
+            backgroundColor: colors.background.default,
             width: '8px',
           },
           '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
             borderRadius: 8,
-            backgroundColor: '#a855f7',
+            backgroundColor: colors.primary.main,
             minHeight: 24,
           },
         },
@@ -86,12 +87,12 @@ const theme = createTheme({
           fontSize: '1rem',
         },
         outlined: {
-          borderColor: '#a855f7',
-          color: '#ffffff',
+          borderColor: colors.primary.main,
+          color: colors.text.primary,
           '&:hover': {
-            borderColor: '#a855f7',
-            backgroundColor: 'rgba(168, 85, 247, 0.08)',
-            boxShadow: '0 0 8px rgba(168, 85, 247, 0.4)',
+            borderColor: colors.primary.main,
+            backgroundColor: colors.primary.light,
+            boxShadow: `0 0 8px ${colors.primary.light}`,
           },
         },
         contained: {
@@ -102,8 +103,8 @@ const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: '#24262d',
-          border: '1px solid rgba(255,255,255,0.08)',
+          backgroundColor: colors.background.paper,
+          border: `1px solid ${colors.divider}`,
           borderRadius: 0,
           boxShadow: 'none',
           backgroundImage: 'none',
@@ -115,7 +116,7 @@ const theme = createTheme({
         root: {
             textDecoration: 'none',
             '&:hover': {
-                color: '#a855f7',
+                color: colors.primary.main,
             }
         }
       }
