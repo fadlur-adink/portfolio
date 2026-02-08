@@ -2,7 +2,8 @@
 
 import { createTheme, type Theme } from "@mui/material/styles";
 import { Inter, JetBrains_Mono } from "next/font/google";
-import type { ColorScheme } from "./settings";
+import type { ColorScheme, Settings } from "./settings";
+import { fontFamilies, fontSizes } from "./settings";
 
 declare module "@mui/material/styles" {
 	interface Palette {
@@ -27,7 +28,26 @@ const jetbrainsMono = JetBrains_Mono({
 	display: "swap",
 });
 
-export function createAppTheme(scheme: ColorScheme): Theme {
+function getFontFamily(fontFamilySetting: Settings["fontFamily"]): string {
+	if (fontFamilySetting === "system") {
+		return inter.style.fontFamily;
+	}
+	return fontFamilies[fontFamilySetting];
+}
+
+function getHeadingFontFamily(fontFamilySetting: Settings["fontFamily"]): string {
+	if (fontFamilySetting === "mono") {
+		return fontFamilies.mono;
+	}
+	return jetbrainsMono.style.fontFamily;
+}
+
+export function createAppTheme(scheme: ColorScheme, settings?: Settings): Theme {
+	const fontFamily = getFontFamily(settings?.fontFamily ?? "system");
+	const headingFontFamily = getHeadingFontFamily(settings?.fontFamily ?? "system");
+	const fontSize = fontSizes[settings?.fontSize ?? "medium"];
+	const baseFontSize = fontSize.base;
+
 	return createTheme({
 		palette: {
 			mode: "dark",
@@ -49,33 +69,34 @@ export function createAppTheme(scheme: ColorScheme): Theme {
 			primaryDark: scheme.primary.dark,
 		},
 		typography: {
-			fontFamily: inter.style.fontFamily,
+			fontFamily: fontFamily,
+			fontSize: baseFontSize,
 			h1: {
-				fontFamily: jetbrainsMono.style.fontFamily,
+				fontFamily: headingFontFamily,
 				fontWeight: 700,
 			},
 			h2: {
-				fontFamily: jetbrainsMono.style.fontFamily,
+				fontFamily: headingFontFamily,
 				fontWeight: 700,
 			},
 			h3: {
-				fontFamily: jetbrainsMono.style.fontFamily,
+				fontFamily: headingFontFamily,
 				fontWeight: 700,
 			},
 			h4: {
-				fontFamily: jetbrainsMono.style.fontFamily,
+				fontFamily: headingFontFamily,
 				fontWeight: 700,
 			},
 			h5: {
-				fontFamily: jetbrainsMono.style.fontFamily,
+				fontFamily: headingFontFamily,
 				fontWeight: 700,
 			},
 			h6: {
-				fontFamily: jetbrainsMono.style.fontFamily,
+				fontFamily: headingFontFamily,
 				fontWeight: 700,
 			},
 			button: {
-				fontFamily: jetbrainsMono.style.fontFamily,
+				fontFamily: headingFontFamily,
 			},
 		},
 		components: {

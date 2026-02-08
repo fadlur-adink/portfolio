@@ -20,12 +20,14 @@ import InfoIcon from "@mui/icons-material/Info";
 import { useSettings } from "@/contexts/settings-context";
 import { colorSchemes, fontFamilies, fontSizes } from "@/config/settings";
 import { useTheme } from "@mui/material/styles";
+import { useTranslations } from "next-intl";
 
 type SettingsTab = "appearance" | "about";
 
 function AppearancePanel() {
 	const { settings, updateSettings, resetSettings } = useSettings();
 	const theme = useTheme();
+	const t = useTranslations("Settings");
 
 	const handleColorSchemeChange = (schemeId: string) => {
 		updateSettings({ colorScheme: schemeId });
@@ -53,7 +55,7 @@ function AppearancePanel() {
 				variant="h6"
 				sx={{ color: theme.palette.text.primary, mb: 3, fontWeight: 600 }}
 			>
-				Appearance
+				{t("appearance")}
 			</Typography>
 
 			<Box sx={{ mb: 4 }}>
@@ -61,7 +63,7 @@ function AppearancePanel() {
 					variant="subtitle2"
 					sx={{ color: theme.palette.text.secondary, mb: 2 }}
 				>
-					Color Scheme
+					{t("colorScheme")}
 				</Typography>
 				<Box
 					sx={{
@@ -120,11 +122,11 @@ function AppearancePanel() {
 			<Box sx={{ mb: 3 }}>
 				<FormControl fullWidth size="small">
 					<InputLabel sx={{ color: theme.palette.text.secondary }}>
-						Language
+						{t("language")}
 					</InputLabel>
 					<Select
 						value={settings.language}
-						label="Language"
+						label={t("language")}
 						onChange={handleLanguageChange}
 						sx={{
 							color: theme.palette.text.primary,
@@ -137,7 +139,7 @@ function AppearancePanel() {
 						}}
 					>
 						<MenuItem value="en">English</MenuItem>
-						<MenuItem value="id">Indonesian</MenuItem>
+						<MenuItem value="id">Bahasa Indonesia</MenuItem>
 					</Select>
 				</FormControl>
 			</Box>
@@ -145,11 +147,11 @@ function AppearancePanel() {
 			<Box sx={{ mb: 3 }}>
 				<FormControl fullWidth size="small">
 					<InputLabel sx={{ color: theme.palette.text.secondary }}>
-						Font Size
+						{t("fontSize")}
 					</InputLabel>
 					<Select
 						value={settings.fontSize}
-						label="Font Size"
+						label={t("fontSize")}
 						onChange={handleFontSizeChange}
 						sx={{
 							color: theme.palette.text.primary,
@@ -161,11 +163,9 @@ function AppearancePanel() {
 							},
 						}}
 					>
-						{Object.entries(fontSizes).map(([key, value]) => (
-							<MenuItem key={key} value={key}>
-								{key.charAt(0).toUpperCase() + key.slice(1)} ({value.base}px)
-							</MenuItem>
-						))}
+						<MenuItem value="small">{t("fontSmall")} ({fontSizes.small.base}px)</MenuItem>
+						<MenuItem value="medium">{t("fontMedium")} ({fontSizes.medium.base}px)</MenuItem>
+						<MenuItem value="large">{t("fontLarge")} ({fontSizes.large.base}px)</MenuItem>
 					</Select>
 				</FormControl>
 			</Box>
@@ -173,11 +173,11 @@ function AppearancePanel() {
 			<Box sx={{ mb: 4 }}>
 				<FormControl fullWidth size="small">
 					<InputLabel sx={{ color: theme.palette.text.secondary }}>
-						Font Family
+						{t("fontFamily")}
 					</InputLabel>
 					<Select
 						value={settings.fontFamily}
-						label="Font Family"
+						label={t("fontFamily")}
 						onChange={handleFontFamilyChange}
 						sx={{
 							color: theme.palette.text.primary,
@@ -189,10 +189,10 @@ function AppearancePanel() {
 							},
 						}}
 					>
-						<MenuItem value="system">System Default</MenuItem>
-						<MenuItem value="mono">Monospace</MenuItem>
-						<MenuItem value="serif">Serif</MenuItem>
-						<MenuItem value="sans">Sans-serif</MenuItem>
+						<MenuItem value="system">{t("fontSystem")}</MenuItem>
+						<MenuItem value="mono">{t("fontMono")}</MenuItem>
+						<MenuItem value="serif">{t("fontSerif")}</MenuItem>
+						<MenuItem value="sans">{t("fontSans")}</MenuItem>
 					</Select>
 				</FormControl>
 			</Box>
@@ -209,7 +209,7 @@ function AppearancePanel() {
 					},
 				}}
 			>
-				Reset to Defaults
+				{t("reset")}
 			</Button>
 		</Box>
 	);
@@ -232,6 +232,7 @@ interface SystemInfoItem {
 function AboutPanel() {
 	const { currentScheme } = useSettings();
 	const theme = useTheme();
+	const t = useTranslations("Settings");
 
 	const systemInfo: SystemInfoItem[] = [
 		{ label: "OS", value: "FadlurOS 1.0.0" },
@@ -255,7 +256,7 @@ function AboutPanel() {
 				variant="h6"
 				sx={{ color: theme.palette.text.primary, mb: 3, fontWeight: 600 }}
 			>
-				About
+				{t("about")}
 			</Typography>
 
 			<Box
@@ -337,6 +338,7 @@ function AboutPanel() {
 export function SettingsApp() {
 	const [activeTab, setActiveTab] = useState<SettingsTab>("appearance");
 	const theme = useTheme();
+	const t = useTranslations("Settings");
 
 	return (
 		<Box sx={{ display: "flex", height: "100%", minHeight: 400 }}>
@@ -369,7 +371,7 @@ export function SettingsApp() {
 							<PaletteIcon sx={{ color: theme.palette.primary.main, fontSize: 20 }} />
 						</ListItemIcon>
 						<ListItemText
-							primary="Appearance"
+							primary={t("appearance")}
 							primaryTypographyProps={{
 								fontSize: "0.875rem",
 								color: theme.palette.text.primary,
@@ -398,7 +400,7 @@ export function SettingsApp() {
 							<InfoIcon sx={{ color: theme.palette.primary.main, fontSize: 20 }} />
 						</ListItemIcon>
 						<ListItemText
-							primary="About"
+							primary={t("about")}
 							primaryTypographyProps={{
 								fontSize: "0.875rem",
 								color: theme.palette.text.primary,

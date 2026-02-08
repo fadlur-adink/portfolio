@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import ThemeRegistry from "@/lib/theme-registry";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
@@ -8,15 +10,20 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body>
-        <ThemeRegistry>{children}</ThemeRegistry>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeRegistry>{children}</ThemeRegistry>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

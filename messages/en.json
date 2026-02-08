@@ -1,0 +1,44 @@
+{
+  "Settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "about": "About",
+    "colorScheme": "Color Scheme",
+    "language": "Language",
+    "fontSize": "Font Size",
+    "fontFamily": "Font Family",
+    "reset": "Reset to Defaults",
+    "fontSmall": "Small",
+    "fontMedium": "Medium",
+    "fontLarge": "Large",
+    "fontSystem": "System Default",
+    "fontMono": "Monospace",
+    "fontSerif": "Serif",
+    "fontSans": "Sans-serif"
+  },
+  "About": {
+    "title": "About Me",
+    "greeting": "Hello, I'm Fadlur Rahman!",
+    "description1": "I'm a Dynamic Front End Programmer with over 4 years of experience crafting innovative web/mobile applications that enhance user engagement and operational efficiency.",
+    "description2": "My expertise lies in leveraging advanced frameworks such as React, Next.js, and React Native to develop responsive applications and robust front-end architectures."
+  },
+  "Welcome": {
+    "title": "Welcome",
+    "subtitle": "Frontend Developer",
+    "description": "Passionate about creating beautiful and functional web experiences. Click on the desktop icons to explore my portfolio.",
+    "openAbout": "Open About Me"
+  },
+  "Projects": {
+    "title": "Projects"
+  },
+  "Skills": {
+    "title": "Skills"
+  },
+  "Contact": {
+    "title": "Contact",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message"
+  }
+}

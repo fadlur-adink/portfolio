@@ -1,0 +1,44 @@
+{
+  "Settings": {
+    "title": "Pengaturan",
+    "appearance": "Tampilan",
+    "about": "Tentang",
+    "colorScheme": "Skema Warna",
+    "language": "Bahasa",
+    "fontSize": "Ukuran Font",
+    "fontFamily": "Jenis Font",
+    "reset": "Reset ke Default",
+    "fontSmall": "Kecil",
+    "fontMedium": "Sedang",
+    "fontLarge": "Besar",
+    "fontSystem": "Default Sistem",
+    "fontMono": "Monospace",
+    "fontSerif": "Serif",
+    "fontSans": "Sans-serif"
+  },
+  "About": {
+    "title": "Tentang Saya",
+    "greeting": "Halo, Saya Fadlur Rahman!",
+    "description1": "Saya adalah Programmer Front End yang dinamis dengan pengalaman lebih dari 4 tahun dalam membuat aplikasi web/mobile inovatif yang meningkatkan keterlibatan pengguna dan efisiensi operasional.",
+    "description2": "Keahlian saya terletak pada pemanfaatan framework canggih seperti React, Next.js, dan React Native untuk mengembangkan aplikasi responsif dan arsitektur front-end yang kokoh."
+  },
+  "Welcome": {
+    "title": "Selamat Datang",
+    "subtitle": "Pengembang Frontend",
+    "description": "Bersemangat dalam menciptakan pengalaman web yang indah dan fungsional. Klik ikon desktop untuk menjelajahi portofolio saya.",
+    "openAbout": "Buka Tentang Saya"
+  },
+  "Projects": {
+    "title": "Proyek"
+  },
+  "Skills": {
+    "title": "Keahlian"
+  },
+  "Contact": {
+    "title": "Kontak",
+    "name": "Nama",
+    "email": "Email",
+    "message": "Pesan",
+    "send": "Kirim Pesan"
+  }
+}

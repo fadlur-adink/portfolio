@@ -9,8 +9,11 @@ import { SettingsProvider, useSettings } from "@/contexts/settings-context";
 import { createAppTheme } from "@/config/theme";
 
 function DynamicThemeProvider({ children }: { children: React.ReactNode }) {
-	const { currentScheme } = useSettings();
-	const theme = useMemo(() => createAppTheme(currentScheme), [currentScheme]);
+	const { currentScheme, settings } = useSettings();
+	const theme = useMemo(
+		() => createAppTheme(currentScheme, settings),
+		[currentScheme, settings]
+	);
 
 	return (
 		<ThemeProvider theme={theme}>

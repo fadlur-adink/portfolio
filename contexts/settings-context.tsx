@@ -16,6 +16,7 @@ import {
 	fontFamilies,
 	fontSizes,
 } from "@/config/settings";
+import { useRouter } from "next/navigation";
 
 interface SettingsContextType {
 	settings: Settings;
@@ -70,6 +71,7 @@ function applySettingsToDocument(settings: Settings, scheme: ColorScheme) {
 export function SettingsProvider({ children }: { children: ReactNode }) {
 	const [settings, setSettings] = useState<Settings>(defaultSettings);
 	const [isHydrated, setIsHydrated] = useState(false);
+	const router = useRouter();
 
 	useEffect(() => {
 		const stored = getStoredSettings();
@@ -78,7 +80,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 	}, []);
 
 	const currentScheme =
-		colorSchemes.find((s) => s.id === settings.colorScheme) || colorSchemes[0];
+		colorSchemes.find((s) => s.id === settings.colorScheme) ||
+		colorSchemes[0];
 
 	useEffect(() => {
 		if (isHydrated) {
@@ -98,6 +101,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
 	const updateSettings = useCallback((updates: Partial<Settings>) => {
 		setSettings((prev) => ({ ...prev, ...updates }));
+
+		// If language changed, set cookie and reload for next-intl
+		if (updates.language) {
+			document.cookie = `locale=${updates.language};path=/;max-age=31536000`;
+			router.refresh();
+		}
 	}, []);
 
 	const resetSettings = useCallback(() => {
@@ -107,6 +116,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 		} catch {
 			/* empty */
 		}
+		// Reset language cookie to default
+		document.cookie = `locale=${defaultSettings.language};path=/;max-age=31536000`;
+		router.refresh();
 	}, []);
 
 	return (
