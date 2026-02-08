@@ -1,8 +1,9 @@
+"use client";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Link from "next/link";
-import { colors } from "@/config/colors";
+import MuiLink from "@mui/material/Link";
 
 export default function NotFound() {
   return (
@@ -26,19 +27,25 @@ export default function NotFound() {
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
           The page you are looking for does not exist or has been moved.
         </Typography>
-        <Link
+        <MuiLink
           href="/"
-          style={{
+          underline="none"
+          sx={{
             display: "inline-block",
-            padding: "12px 24px",
-            border: `1px solid ${colors.primary.main}`,
-            color: colors.primary.main,
-            textDecoration: "none",
-            borderRadius: "4px",
+            px: 3,
+            py: 1.5,
+            border: "1px solid",
+            borderColor: "primary.main",
+            color: "primary.main",
+            borderRadius: 1,
+            "&:hover": {
+              bgcolor: "primary.main",
+              color: "background.paper",
+            },
           }}
         >
           Go back home
-        </Link>
+        </MuiLink>
       </Container>
     </Box>
   );

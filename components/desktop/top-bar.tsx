@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Box, Typography, ClickAwayListener, keyframes } from "@mui/material";
-import { colors } from "@/config/colors";
+import { Box, Typography, ClickAwayListener, IconButton, keyframes } from "@mui/material";
+import SettingsIcon from "@mui/icons-material/Settings";
+import { useTheme } from "@mui/material/styles";
 import { siteConfig } from "@/config/site";
+import { useWindowManager } from "@/contexts/window-manager-context";
 
 const fadeIn = keyframes`
   from {
@@ -18,6 +20,7 @@ const fadeIn = keyframes`
 
 function AnalogClock() {
 	const [time, setTime] = useState(new Date());
+	const theme = useTheme();
 
 	useEffect(() => {
 		const interval = setInterval(() => setTime(new Date()), 1000);
@@ -38,8 +41,8 @@ function AnalogClock() {
 				width: 180,
 				height: 180,
 				borderRadius: "50%",
-				backgroundColor: colors.background.default,
-				border: `3px solid ${colors.primary.main}`,
+				backgroundColor: theme.palette.background.default,
+				border: `3px solid ${theme.palette.primary.main}`,
 				position: "relative",
 				margin: "0 auto",
 			}}
@@ -55,8 +58,8 @@ function AnalogClock() {
 						height: i % 3 === 0 ? 12 : 6,
 						backgroundColor:
 							i % 3 === 0
-								? colors.text.primary
-								: colors.text.secondary,
+								? theme.palette.text.primary
+								: theme.palette.text.secondary,
 						transformOrigin: "center 78px",
 						transform: `translate(-50%, -78px) rotate(${i * 30}deg)`,
 					}}
@@ -70,7 +73,7 @@ function AnalogClock() {
 					left: "50%",
 					width: 4,
 					height: 50,
-					backgroundColor: colors.text.primary,
+					backgroundColor: theme.palette.text.primary,
 					borderRadius: 2,
 					transformOrigin: "center bottom",
 					transform: `translate(-50%, -100%) rotate(${hourDeg}deg)`,
@@ -85,7 +88,7 @@ function AnalogClock() {
 					left: "50%",
 					width: 3,
 					height: 65,
-					backgroundColor: colors.text.primary,
+					backgroundColor: theme.palette.text.primary,
 					borderRadius: 2,
 					transformOrigin: "center bottom",
 					transform: `translate(-50%, -100%) rotate(${minuteDeg}deg)`,
@@ -100,7 +103,7 @@ function AnalogClock() {
 					left: "50%",
 					width: 2,
 					height: 70,
-					backgroundColor: colors.primary.main,
+					backgroundColor: theme.palette.primary.main,
 					borderRadius: 1,
 					transformOrigin: "center bottom",
 					transform: `translate(-50%, -100%) rotate(${secondDeg}deg)`,
@@ -114,7 +117,7 @@ function AnalogClock() {
 					left: "50%",
 					width: 10,
 					height: 10,
-					backgroundColor: colors.primary.main,
+					backgroundColor: theme.palette.primary.main,
 					borderRadius: "50%",
 					transform: "translate(-50%, -50%)",
 				}}
@@ -125,6 +128,7 @@ function AnalogClock() {
 
 function Calendar() {
 	const [currentDate] = useState(new Date());
+	const theme = useTheme();
 	const today = new Date();
 
 	const year = currentDate.getFullYear();
@@ -153,7 +157,7 @@ function Calendar() {
 				variant="subtitle2"
 				sx={{
 					textAlign: "center",
-					color: colors.text.primary,
+					color: theme.palette.text.primary,
 					fontWeight: 600,
 					mb: 2,
 				}}
@@ -175,7 +179,7 @@ function Calendar() {
 						variant="caption"
 						sx={{
 							textAlign: "center",
-							color: colors.text.secondary,
+							color: theme.palette.text.secondary,
 							fontWeight: 600,
 							fontSize: "0.65rem",
 						}}
@@ -208,14 +212,14 @@ function Calendar() {
 								justifyContent: "center",
 								borderRadius: "50%",
 								backgroundColor: isToday
-									? colors.primary.main
+									? theme.palette.primary.main
 									: "transparent",
 								cursor: day ? "pointer" : "default",
 								"&:hover": day
 									? {
 											backgroundColor: isToday
-												? colors.primary.dark
-												: colors.primary.light,
+												? theme.palette.primaryDark
+												: theme.palette.primaryLight,
 										}
 									: {},
 							}}
@@ -226,7 +230,7 @@ function Calendar() {
 									sx={{
 										color: isToday
 											? "#fff"
-											: colors.text.primary,
+											: theme.palette.text.primary,
 										fontWeight: isToday ? 600 : 400,
 										fontSize: "0.75rem",
 									}}
@@ -248,6 +252,7 @@ interface DropdownProps {
 }
 
 function Dropdown({ children, onClose }: DropdownProps) {
+	const theme = useTheme();
 	return (
 		<ClickAwayListener onClickAway={onClose}>
 			<Box
@@ -255,8 +260,8 @@ function Dropdown({ children, onClose }: DropdownProps) {
 					position: "absolute",
 					top: 48,
 					right: 0,
-					backgroundColor: colors.background.paper,
-					border: `1px solid ${colors.divider}`,
+					backgroundColor: theme.palette.background.paper,
+					border: `1px solid ${theme.palette.divider}`,
 					borderRadius: 2,
 					boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
 					p: 2,
@@ -272,6 +277,7 @@ function Dropdown({ children, onClose }: DropdownProps) {
 
 function Clock({ onClick }: { onClick: () => void }) {
 	const [time, setTime] = useState<string>("");
+	const theme = useTheme();
 
 	useEffect(() => {
 		const updateTime = () => {
@@ -295,7 +301,7 @@ function Clock({ onClick }: { onClick: () => void }) {
 			variant="body2"
 			onClick={onClick}
 			sx={{
-				color: colors.text.primary,
+				color: theme.palette.text.primary,
 				fontWeight: 500,
 				fontFamily: "monospace",
 				cursor: "pointer",
@@ -303,7 +309,7 @@ function Clock({ onClick }: { onClick: () => void }) {
 				py: 0.5,
 				borderRadius: 1,
 				"&:hover": {
-					backgroundColor: colors.primary.light,
+					backgroundColor: theme.palette.primaryLight,
 				},
 			}}
 		>
@@ -314,6 +320,7 @@ function Clock({ onClick }: { onClick: () => void }) {
 
 function CurrentDate({ onClick }: { onClick: () => void }) {
 	const [date, setDate] = useState<string>("");
+	const theme = useTheme();
 
 	useEffect(() => {
 		const updateDate = () => {
@@ -338,7 +345,7 @@ function CurrentDate({ onClick }: { onClick: () => void }) {
 			variant="body2"
 			onClick={onClick}
 			sx={{
-				color: colors.text.primary,
+				color: theme.palette.text.primary,
 				fontWeight: 500,
 				fontFamily: "monospace",
 				cursor: "pointer",
@@ -346,7 +353,7 @@ function CurrentDate({ onClick }: { onClick: () => void }) {
 				py: 0.5,
 				borderRadius: 1,
 				"&:hover": {
-					backgroundColor: colors.primary.light,
+					backgroundColor: theme.palette.primaryLight,
 				},
 			}}
 		>
@@ -360,6 +367,8 @@ export function TopBar() {
 	const [showCalendar, setShowCalendar] = useState(false);
 	const clockRef = useRef<HTMLDivElement>(null);
 	const dateRef = useRef<HTMLDivElement>(null);
+	const { openWindow } = useWindowManager();
+	const theme = useTheme();
 
 	const handleClockClick = () => {
 		setShowCalendar(false);
@@ -371,6 +380,10 @@ export function TopBar() {
 		setShowCalendar((prev) => !prev);
 	};
 
+	const handleSettingsClick = () => {
+		openWindow("settings");
+	};
+
 	return (
 		<Box
 			sx={{
@@ -379,8 +392,8 @@ export function TopBar() {
 				left: 0,
 				right: 0,
 				height: 40,
-				backgroundColor: colors.background.paper,
-				borderBottom: `1px solid ${colors.divider}`,
+				backgroundColor: theme.palette.background.paper,
+				borderBottom: `1px solid ${theme.palette.divider}`,
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "space-between",
@@ -392,7 +405,7 @@ export function TopBar() {
 				<Typography
 					variant="body2"
 					sx={{
-						color: colors.primary.main,
+						color: theme.palette.primary.main,
 						fontWeight: 700,
 						letterSpacing: "0.05em",
 					}}
@@ -402,6 +415,20 @@ export function TopBar() {
 			</Box>
 
 			<Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+				<IconButton
+					onClick={handleSettingsClick}
+					size="small"
+					sx={{
+						color: theme.palette.text.secondary,
+						"&:hover": {
+							backgroundColor: theme.palette.primaryLight,
+							color: theme.palette.primary.main,
+						},
+					}}
+				>
+					<SettingsIcon sx={{ fontSize: 18 }} />
+				</IconButton>
+
 				<Box ref={dateRef} sx={{ position: "relative" }}>
 					<CurrentDate onClick={handleDateClick} />
 					{showCalendar && (

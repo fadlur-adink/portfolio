@@ -1,11 +1,12 @@
 "use client";
 
 import { Box, Typography, IconButton } from "@mui/material";
-import { colors } from "@/config/colors";
+import { useTheme } from "@mui/material/styles";
 import { useWindowManager } from "@/contexts/window-manager-context";
 
 export function Dock() {
   const { state, restoreWindow, getApp } = useWindowManager();
+  const theme = useTheme();
 
   const minimizedWindows = state.windows.filter((w) => w.isMinimized);
 
@@ -23,10 +24,10 @@ export function Dock() {
         display: "flex",
         gap: 1,
         padding: "8px 12px",
-        backgroundColor: `${colors.background.paper}ee`,
+        backgroundColor: `${theme.palette.background.paper}ee`,
         backdropFilter: "blur(10px)",
         borderRadius: "12px",
-        border: `1px solid ${colors.divider}`,
+        border: `1px solid ${theme.palette.divider}`,
         boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
         zIndex: 9998,
       }}
@@ -41,16 +42,16 @@ export function Dock() {
               width: 48,
               height: 48,
               borderRadius: "10px",
-              backgroundColor: colors.background.default,
-              border: `1px solid ${colors.divider}`,
+              backgroundColor: theme.palette.background.default,
+              border: `1px solid ${theme.palette.divider}`,
               transition: "all 0.2s ease",
               "&:hover": {
-                backgroundColor: colors.primary.light,
+                backgroundColor: theme.palette.primaryLight,
                 transform: "translateY(-4px)",
               },
               "& svg": {
                 fontSize: 24,
-                color: colors.primary.main,
+                color: theme.palette.primary.main,
               },
             }}
             title={window.title}
@@ -66,7 +67,7 @@ export function Dock() {
           bottom: -20,
           left: "50%",
           transform: "translateX(-50%)",
-          color: colors.text.secondary,
+          color: theme.palette.text.secondary,
           fontSize: "0.65rem",
           whiteSpace: "nowrap",
         }}

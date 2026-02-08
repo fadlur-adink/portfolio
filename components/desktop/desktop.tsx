@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Box, keyframes } from "@mui/material";
-import { colors } from "@/config/colors";
+import { useTheme } from "@mui/material/styles";
 import { useWindowManager } from "@/contexts/window-manager-context";
 import { TopBar } from "./top-bar";
 import { DesktopIcon } from "./desktop-icon";
@@ -48,6 +48,7 @@ interface DesktopProps {
 export function Desktop({ apps }: DesktopProps) {
   const { state, openWindow, registerApp, getApp } = useWindowManager();
   const [isLoaded, setIsLoaded] = useState(false);
+  const theme = useTheme();
 
   useEffect(() => {
     apps.forEach((app) => registerApp(app));
@@ -60,10 +61,10 @@ export function Desktop({ apps }: DesktopProps) {
       sx={{
         position: "fixed",
         inset: 0,
-        backgroundColor: colors.background.default,
+        backgroundColor: theme.palette.background.default,
         backgroundImage: `
-          radial-gradient(ellipse at top, ${colors.primary.main}10 0%, transparent 50%),
-          radial-gradient(ellipse at bottom right, ${colors.primary.dark}08 0%, transparent 50%)
+          radial-gradient(ellipse at top, ${theme.palette.primary.main}10 0%, transparent 50%),
+          radial-gradient(ellipse at bottom right, ${theme.palette.primaryDark}08 0%, transparent 50%)
         `,
         overflow: "hidden",
         animation: `${fadeIn} 0.6s ease-out`,

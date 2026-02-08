@@ -3,13 +3,13 @@
 import { useRef, useState, useEffect } from "react";
 import { Rnd } from "react-rnd";
 import { Box, IconButton, Typography, keyframes } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
 import FilterNoneIcon from "@mui/icons-material/FilterNone";
 import { WindowState } from "@/types/window";
 import { useWindowManager } from "@/contexts/window-manager-context";
-import { colors } from "@/config/colors";
 
 interface WindowProps {
   window: WindowState;
@@ -46,6 +46,7 @@ function useViewportSize() {
 }
 
 export function Window({ window: windowState, children }: WindowProps) {
+  const theme = useTheme();
   const {
     closeWindow,
     minimizeWindow,
@@ -169,12 +170,12 @@ export function Window({ window: windowState, children }: WindowProps) {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          backgroundColor: colors.background.paper,
+          backgroundColor: theme.palette.background.paper,
           borderRadius: isMaximized ? 0 : "8px",
-          border: isMaximized ? "none" : `1px solid ${colors.divider}`,
-          borderTop: isMaximized ? `1px solid ${colors.divider}` : `1px solid ${colors.divider}`,
+          border: isMaximized ? "none" : `1px solid ${theme.palette.divider}`,
+          borderTop: `1px solid ${theme.palette.divider}`,
           boxShadow: windowState.isFocused
-            ? `0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px ${colors.primary.main}40`
+            ? `0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px ${theme.palette.primary.main}40`
             : "0 4px 16px rgba(0, 0, 0, 0.3)",
           overflow: "hidden",
           animation: isMounting ? `${scaleIn} 0.4s cubic-bezier(0.2, 0.9, 0.2, 1)` : "none",
@@ -191,7 +192,7 @@ export function Window({ window: windowState, children }: WindowProps) {
           sx={{
             flex: 1,
             overflow: "auto",
-            backgroundColor: colors.background.default,
+            backgroundColor: theme.palette.background.default,
           }}
         >
           {children}
@@ -216,6 +217,7 @@ function TitleBar({
   onMaximize,
   onClose,
 }: TitleBarProps) {
+  const theme = useTheme();
   const handleButtonInteraction = (
     e: React.MouseEvent | React.TouchEvent | React.PointerEvent,
     action: () => void
@@ -233,9 +235,9 @@ function TitleBar({
         justifyContent: "space-between",
         height: 36,
         backgroundColor: windowState.isFocused
-          ? colors.background.default
-          : colors.background.paper,
-        borderBottom: `1px solid ${colors.divider}`,
+          ? theme.palette.background.default
+          : theme.palette.background.paper,
+        borderBottom: `1px solid ${theme.palette.divider}`,
         px: 1,
         userSelect: "none",
       }}
@@ -256,7 +258,7 @@ function TitleBar({
         <Typography
           variant="body2"
           sx={{
-            color: colors.text.primary,
+            color: theme.palette.text.primary,
             fontWeight: 500,
             ml: 1,
           }}
@@ -272,7 +274,7 @@ function TitleBar({
           sx={{
             width: 32,
             height: 32,
-            color: colors.text.secondary,
+            color: theme.palette.text.secondary,
             touchAction: "manipulation",
             "&:hover": {
               backgroundColor: "rgba(255, 255, 255, 0.1)",
@@ -287,7 +289,7 @@ function TitleBar({
           sx={{
             width: 32,
             height: 32,
-            color: colors.text.secondary,
+            color: theme.palette.text.secondary,
             touchAction: "manipulation",
             "&:hover": {
               backgroundColor: "rgba(255, 255, 255, 0.1)",
@@ -306,11 +308,11 @@ function TitleBar({
           sx={{
             width: 32,
             height: 32,
-            color: colors.text.secondary,
+            color: theme.palette.text.secondary,
             touchAction: "manipulation",
             "&:hover": {
               backgroundColor: "rgba(239, 68, 68, 0.8)",
-              color: colors.text.primary,
+              color: theme.palette.text.primary,
             },
           }}
         >
