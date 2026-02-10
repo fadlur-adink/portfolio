@@ -30,5 +30,4 @@ html {
 
 .maximized-window-wrapper {
   transform: none !important;
-  z-index: 1000 !important; /* Ensure it's on top */
 }

@@ -180,6 +180,7 @@ export function Window({ window: windowState, children }: WindowProps) {
         style={{
           margin: 0,
           pointerEvents: isMinimized ? "none" : "auto",
+          zIndex: windowState.zIndex,
           transition:
             isDragging || isResizing
               ? "none"
