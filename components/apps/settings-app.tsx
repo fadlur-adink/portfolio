@@ -61,78 +61,93 @@ export function SettingsApp() {
 		<Box
 			ref={containerRef}
 			sx={{
-				display: "flex",
 				height: "100%",
 				minHeight: 400,
 				position: "relative",
 				overflow: "hidden",
 			}}
 		>
-			{/* Sidebar */}
 			<Box
 				sx={{
-					width: isMobile ? "100%" : 200,
-					borderRight: isMobile ? "none" : `1px solid ${theme.palette.divider}`,
-					backgroundColor: theme.palette.background.default,
-					display: isMobile && !showSidebar ? "none" : "block",
-					flexShrink: 0,
+					display: "flex",
+					width: isMobile ? "200%" : "100%",
 					height: "100%",
-					zIndex: 1,
+					transition: isMobile
+						? "transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1)"
+						: "none",
+					transform: isMobile
+						? showSidebar
+							? "translateX(0)"
+							: "translateX(-50%)"
+						: "none",
 				}}
 			>
-				<List sx={{ py: 1 }}>
-					<SidebarItem
-						icon={<PaletteIcon sx={{ fontSize: 20 }} />}
-						label={t("appearance")}
-						isActive={activeTab === "appearance"}
-						onClick={() => handleSidebarClick("appearance")}
-					/>
-					<SidebarItem
-						icon={<InfoIcon sx={{ fontSize: 20 }} />}
-						label={t("about")}
-						isActive={activeTab === "about"}
-						onClick={() => handleSidebarClick("about")}
-					/>
-				</List>
-			</Box>
+				{/* Sidebar */}
+				<Box
+					sx={{
+						width: isMobile ? "50%" : 200,
+						flexShrink: 0,
+						height: "100%",
+						borderRight: isMobile ? "none" : `1px solid ${theme.palette.divider}`,
+						backgroundColor: theme.palette.background.default,
+						zIndex: 1,
+					}}
+				>
+					<List sx={{ py: 1 }}>
+						<SidebarItem
+							icon={<PaletteIcon sx={{ fontSize: 20 }} />}
+							label={t("appearance")}
+							isActive={activeTab === "appearance"}
+							onClick={() => handleSidebarClick("appearance")}
+						/>
+						<SidebarItem
+							icon={<InfoIcon sx={{ fontSize: 20 }} />}
+							label={t("about")}
+							isActive={activeTab === "about"}
+							onClick={() => handleSidebarClick("about")}
+						/>
+					</List>
+				</Box>
 
-			{/* Content Area */}
-			<Box
-				sx={{
-					flex: 1,
-					display: isMobile && showSidebar ? "none" : "flex",
-					flexDirection: "column",
-					overflow: "hidden",
-					backgroundColor: theme.palette.background.paper,
-					height: "100%",
-				}}
-			>
-				{isMobile && (
-					<Box
-						sx={{
-							p: 1,
-							display: "flex",
-							alignItems: "center",
-							borderBottom: `1px solid ${theme.palette.divider}`,
-							backgroundColor: theme.palette.background.paper,
-						}}
-					>
-						<IconButton
-							onClick={() => setShowSidebar(true)}
-							size="small"
-							sx={{ mr: 1 }}
+				{/* Content Area */}
+				<Box
+					sx={{
+						flex: isMobile ? "none" : 1,
+						width: isMobile ? "50%" : "auto",
+						display: "flex",
+						flexDirection: "column",
+						overflow: "hidden",
+						backgroundColor: theme.palette.background.paper,
+						height: "100%",
+					}}
+				>
+					{isMobile && (
+						<Box
+							sx={{
+								p: 1,
+								display: "flex",
+								alignItems: "center",
+								borderBottom: `1px solid ${theme.palette.divider}`,
+								backgroundColor: theme.palette.background.paper,
+							}}
 						>
-							<ArrowBackIcon />
-						</IconButton>
-						<Typography variant="subtitle1" fontWeight="bold">
-							{t(activeTab)}
-						</Typography>
-					</Box>
-				)}
+							<IconButton
+								onClick={() => setShowSidebar(true)}
+								size="small"
+								sx={{ mr: 1 }}
+							>
+								<ArrowBackIcon />
+							</IconButton>
+							<Typography variant="subtitle1" fontWeight="bold">
+								{t(activeTab)}
+							</Typography>
+						</Box>
+					)}
 
-				<Box sx={{ flex: 1, overflow: "auto" }}>
-					{activeTab === "appearance" && <AppearancePanel />}
-					{activeTab === "about" && <AboutPanel />}
+					<Box sx={{ flex: 1, overflow: "auto" }}>
+						{activeTab === "appearance" && <AppearancePanel />}
+						{activeTab === "about" && <AboutPanel />}
+					</Box>
 				</Box>
 			</Box>
 		</Box>
