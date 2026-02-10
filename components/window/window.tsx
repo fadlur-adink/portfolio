@@ -149,7 +149,7 @@ export function Window({ window: windowState, children }: WindowProps) {
         minHeight={200}
         maxWidth={viewport.width}
         maxHeight={viewport.height - TOP_BAR_HEIGHT}
-        bounds="window"
+        bounds={isMaximized ? undefined : "window"}
         dragHandleClassName="window-drag-handle"
         disableDragging={isMaximized || isMinimized}
         onDragStart={() => {
@@ -176,6 +176,7 @@ export function Window({ window: windowState, children }: WindowProps) {
           moveWindow(windowState.id, { x: position.x, y: position.y });
         }}
         style={{
+          margin: 0,
           pointerEvents: isMinimized ? "none" : "auto",
           transition:
             isDragging || isResizing
