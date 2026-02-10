@@ -397,7 +397,7 @@ export function TopBar() {
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "space-between",
-				px: 2,
+				px: { xs: 1, sm: 2 },
 				zIndex: 9999,
 			}}
 		>
@@ -408,9 +408,24 @@ export function TopBar() {
 						color: theme.palette.primary.main,
 						fontWeight: 700,
 						letterSpacing: "0.05em",
+						display: { xs: "none", sm: "block" },
 					}}
 				>
 					{siteConfig.name}
+				</Typography>
+				<Typography
+					variant="body2"
+					sx={{
+						color: theme.palette.primary.main,
+						fontWeight: 700,
+						letterSpacing: "0.05em",
+						display: { xs: "block", sm: "none" },
+					}}
+				>
+					{siteConfig.name
+						.split(" ")
+						.map((n) => n[0])
+						.join("")}
 				</Typography>
 			</Box>
 
@@ -429,7 +444,10 @@ export function TopBar() {
 					<SettingsIcon sx={{ fontSize: 18 }} />
 				</IconButton>
 
-				<Box ref={dateRef} sx={{ position: "relative" }}>
+				<Box
+					ref={dateRef}
+					sx={{ position: "relative", display: { xs: "none", sm: "block" } }}
+				>
 					<CurrentDate onClick={handleDateClick} />
 					{showCalendar && (
 						<Dropdown onClose={() => setShowCalendar(false)}>

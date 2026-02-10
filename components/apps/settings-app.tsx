@@ -88,7 +88,9 @@ export function SettingsApp() {
 						width: isMobile ? "50%" : 200,
 						flexShrink: 0,
 						height: "100%",
-						borderRight: isMobile ? "none" : `1px solid ${theme.palette.divider}`,
+						borderRight: isMobile
+							? "none"
+							: `1px solid ${theme.palette.divider}`,
 						backgroundColor: theme.palette.background.default,
 						zIndex: 1,
 					}}
@@ -136,7 +138,7 @@ export function SettingsApp() {
 								size="small"
 								sx={{ mr: 1 }}
 							>
-								<ArrowBackIcon />
+								<ArrowBackIcon sx={{ color: "text.primary" }} />
 							</IconButton>
 							<Typography variant="subtitle1" fontWeight="bold">
 								{t(activeTab)}
