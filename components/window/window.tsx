@@ -48,6 +48,7 @@ function useViewportSize() {
 export function Window({ window: windowState, children }: WindowProps) {
   const theme = useTheme();
   const {
+    state,
     closeWindow,
     minimizeWindow,
     maximizeWindow,
@@ -59,6 +60,8 @@ export function Window({ window: windowState, children }: WindowProps) {
   const rndRef = useRef<Rnd>(null);
   const viewport = useViewportSize();
   const [isMounting, setIsMounting] = useState(true);
+
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsMounting(false), 50);
@@ -103,15 +106,30 @@ export function Window({ window: windowState, children }: WindowProps) {
     }
   }
 
+  const windowIndex = state.windows.findIndex((w) => w.id === windowState.id);
+  
+  const iconSize = 48;
+  const iconGap = 8;
+  const dockPadding = 12;
+  const totalIconsWidth = state.windows.length * iconSize + (state.windows.length - 1) * iconGap;
+  const dockWidth = Math.max(0, totalIconsWidth + dockPadding * 2);
+  const dockX = (viewport.width - dockWidth) / 2;
+  const iconX = dockX + dockPadding + windowIndex * (iconSize + iconGap) + iconSize / 2;
+  const iconY = viewport.height - 16 - 32;
+
   const animationStyle = isMinimized
     ? {
         opacity: 0,
-        transform: `translate(${viewport.width / 2 - targetWidth / 2}px, ${viewport.height}px) scale(0.1)`,
+        transform: `translate(${iconX - targetWidth / 2}px, ${iconY - targetHeight / 2}px) scale(0.1)`,
       }
     : {
         opacity: 1,
-        transform: "none",
+        transform: undefined,
       };
+
+  const transitionCurve = isMinimized 
+    ? "cubic-bezier(0.4, 0, 1, 1)"
+    : "cubic-bezier(0, 0, 0.2, 1)";
 
   return (
     <Rnd
@@ -125,13 +143,17 @@ export function Window({ window: windowState, children }: WindowProps) {
       bounds="window"
       dragHandleClassName="window-drag-handle"
       disableDragging={isMaximized || isMinimized}
-      onDragStart={() => focusWindow(windowState.id)}
+      onDragStart={() => {
+        focusWindow(windowState.id);
+        setIsDragging(true);
+      }}
       onDrag={(_e, d) => {
         if (d.y < TOP_BAR_HEIGHT) {
           d.y = TOP_BAR_HEIGHT;
         }
       }}
       onDragStop={(_e, d) => {
+        setIsDragging(false);
         const clampedY = Math.max(TOP_BAR_HEIGHT, d.y);
         moveWindow(windowState.id, { x: d.x, y: clampedY });
       }}
@@ -144,7 +166,7 @@ export function Window({ window: windowState, children }: WindowProps) {
       }}
       style={{
         zIndex: windowState.zIndex,
-        transition: isMounting ? "none" : "all 0.4s cubic-bezier(0.2, 0.9, 0.2, 1)",
+        transition: (isMounting || isDragging) ? "none" : `all 0.5s ${transitionCurve}`,
         pointerEvents: isMinimized ? "none" : "auto",
         ...animationStyle,
       }}

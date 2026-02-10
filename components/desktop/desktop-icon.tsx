@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { alpha, Box, Typography } from "@mui/material";
 
 interface DesktopIconProps {
 	icon: React.ReactNode;
@@ -22,7 +22,8 @@ export function DesktopIcon({ icon, label, onClick }: DesktopIconProps) {
 				borderRadius: "8px",
 				transition: "background-color 0.2s ease",
 				"&:hover": {
-					backgroundColor: "rgba(255, 255, 255, 0.08)",
+					backgroundColor: (theme) =>
+						alpha(theme.palette.primary.main, 0.08),
 				},
 				"&:active": {
 					backgroundColor: "primaryLight",
