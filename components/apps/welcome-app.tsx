@@ -58,8 +58,9 @@ export function WelcomeApp() {
 				variant="body1"
 				sx={{ color: "text.secondary", maxWidth: 400 }}
 			>
-				Dynamic Front End Programmer with over 4 years of experience
-				crafting innovative web/mobile applications.
+				Recently, I’ve been diving into vibe coding and AI automation,
+				experimenting with how AI can enhance the development process—
+				from faster prototyping to cleaner, more maintainable code.
 			</Typography>
 
 			<Box

@@ -27,21 +27,31 @@ export function AboutApp() {
 						variant="body1"
 						sx={{ color: "text.secondary", mb: 2 }}
 					>
-						I&apos;m a Dynamic Front End Programmer with over 4
-						years of experience crafting innovative web/mobile
-						applications that enhance user engagement and
-						operational efficiency.
+						I'm a dynamic Front End Engineer with over 4 years of
+						experience building web and mobile applications that
+						enhance user engagement and operational efficiency.
+					</Typography>
+					<Typography
+						variant="body1"
+						sx={{ color: "text.secondary", mb: 2 }}
+					>
+						My expertise lies in leveraging modern frameworks such
+						as React, Next.js, and React Native to develop
+						responsive applications and robust front-end
+						architectures. I have hands-on experience delivering
+						real-time systems, kiosk-based applications, and
+						high-performance user interfaces, and I collaborate
+						effectively with cross-functional teams to build
+						scalable solutions.
 					</Typography>
 					<Typography
 						variant="body1"
 						sx={{ color: "text.secondary" }}
 					>
-						My expertise lies in leveraging advanced frameworks such
-						as React, Next.js, and React Native to develop
-						responsive applications and robust front-end
-						architectures. I am proficient in collaborating with
-						cross-functional teams to deliver scalable and
-						high-performance systems.
+						Recently, I’ve been exploring vibe coding, AI-assisted
+						development, and automation workflows, leveraging modern
+						AI tools to improve development speed, code quality, and
+						overall engineering efficiency.
 					</Typography>
 				</Grid>
 				<Grid

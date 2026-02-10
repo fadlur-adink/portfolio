@@ -3,7 +3,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import EmailIcon from "@mui/icons-material/Email";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Link, Typography } from "@mui/material";
 
 export function ContactApp() {
 	return (
@@ -63,7 +63,7 @@ export function ContactApp() {
 								gap: 2,
 							}}
 						>
-							<Box
+							{/* <Box
 								sx={{
 									display: "flex",
 									alignItems: "center",
@@ -89,7 +89,7 @@ export function ContactApp() {
 										{siteConfig.discord}
 									</Typography>
 								</Box>
-							</Box>
+							</Box> */}
 
 							<Box
 								sx={{
@@ -142,10 +142,12 @@ export function ContactApp() {
 											color: "text.primary",
 										}}
 									>
-										@
-										{siteConfig.name
-											.toLowerCase()
-											.replace(" ", "")}
+										<Link
+											href={siteConfig.links.github}
+											target="_blank"
+										>
+											{siteConfig.links.github}
+										</Link>
 									</Typography>
 								</Box>
 							</Box>
@@ -173,7 +175,12 @@ export function ContactApp() {
 											color: "text.primary",
 										}}
 									>
-										Fadlur Rahman
+										<Link
+											href={siteConfig.links.linkedin}
+											target="_blank"
+										>
+											{siteConfig.name}
+										</Link>
 									</Typography>
 								</Box>
 							</Box>
