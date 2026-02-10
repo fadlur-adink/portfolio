@@ -1,13 +1,10 @@
-"use client";
-
 import {
 	FormControl,
 	InputLabel,
-	Select,
 	MenuItem,
+	Select,
 	type SelectChangeEvent,
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 
 export function SettingsSelect({
 	label,
@@ -20,24 +17,20 @@ export function SettingsSelect({
 	onChange: (e: SelectChangeEvent) => void;
 	options: { value: string; label: string }[];
 }) {
-	const theme = useTheme();
-
 	return (
 		<FormControl fullWidth size="small">
-			<InputLabel sx={{ color: theme.palette.text.secondary }}>
-				{label}
-			</InputLabel>
+			<InputLabel sx={{ color: "text.secondary" }}>{label}</InputLabel>
 			<Select
 				value={value}
 				label={label}
 				onChange={onChange}
 				sx={{
-					color: theme.palette.text.primary,
+					color: "text.primary",
 					"& .MuiOutlinedInput-notchedOutline": {
-						borderColor: theme.palette.divider,
+						borderColor: "divider",
 					},
 					"&:hover .MuiOutlinedInput-notchedOutline": {
-						borderColor: theme.palette.primary.main,
+						borderColor: "primary.main",
 					},
 				}}
 			>

@@ -1,7 +1,4 @@
-"use client";
-
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 
 export function SidebarItem({
 	icon,
@@ -14,8 +11,6 @@ export function SidebarItem({
 	isActive: boolean;
 	onClick: () => void;
 }) {
-	const theme = useTheme();
-
 	return (
 		<ListItemButton
 			selected={isActive}
@@ -24,20 +19,22 @@ export function SidebarItem({
 				mx: 1,
 				borderRadius: 1,
 				"&.Mui-selected": {
-					backgroundColor: theme.palette.primaryLight,
-					"&:hover": { backgroundColor: theme.palette.primaryLight },
+					backgroundColor: "primaryLight",
+					"&:hover": { backgroundColor: "primaryLight" },
 				},
-				"&:hover": { backgroundColor: theme.palette.primaryLight },
+				"&:hover": { backgroundColor: "primaryLight" },
 			}}
 		>
-			<ListItemIcon sx={{ minWidth: 36, color: theme.palette.primary.main }}>
+			<ListItemIcon sx={{ minWidth: 36, color: "primary.main" }}>
 				{icon}
 			</ListItemIcon>
 			<ListItemText
 				primary={label}
-				primaryTypographyProps={{
-					fontSize: "0.875rem",
-					color: theme.palette.text.primary,
+				slotProps={{
+					primary: {
+						fontSize: "0.875rem",
+						color: "text.primary",
+					},
 				}}
 			/>
 		</ListItemButton>

@@ -1,8 +1,5 @@
-"use client";
-
-import { Box, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import type { ColorScheme } from "@/config/settings";
+import { Box, Typography } from "@mui/material";
 
 export function ColorSchemeCard({
 	scheme,
@@ -13,8 +10,6 @@ export function ColorSchemeCard({
 	isSelected: boolean;
 	onSelect: () => void;
 }) {
-	const theme = useTheme();
-
 	return (
 		<Box
 			onClick={onSelect}
@@ -22,9 +17,10 @@ export function ColorSchemeCard({
 				cursor: "pointer",
 				borderRadius: 2,
 				p: 1.5,
-				border: isSelected
-					? `2px solid ${scheme.primary.main}`
-					: `2px solid ${theme.palette.divider}`,
+				border: (theme) =>
+					isSelected
+						? `2px solid ${scheme.primary.main}`
+						: `2px solid ${theme.palette.divider}`,
 				backgroundColor: isSelected
 					? scheme.primary.light
 					: "transparent",
@@ -45,7 +41,7 @@ export function ColorSchemeCard({
 			<Typography
 				variant="caption"
 				sx={{
-					color: theme.palette.text.primary,
+					color: "text.primary",
 					display: "block",
 					textAlign: "center",
 					fontWeight: isSelected ? 600 : 400,
