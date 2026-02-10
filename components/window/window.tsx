@@ -52,6 +52,7 @@ export function Window({ window: windowState, children }: WindowProps) {
   const rndRef = useRef<Rnd>(null);
   const viewport = useViewportSize();
   const [isDragging, setIsDragging] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
 
   if (!windowState.isOpen) {
     return null;
@@ -137,7 +138,7 @@ export function Window({ window: windowState, children }: WindowProps) {
         height: "100%",
         pointerEvents: "none",
         zIndex: windowState.zIndex,
-        transformOrigin: `${centerX}px ${centerY}px`,
+        transformOrigin: isMinimized ? `${centerX}px ${centerY}px` : "center",
       }}
     >
       <Rnd
@@ -165,7 +166,9 @@ export function Window({ window: windowState, children }: WindowProps) {
           const clampedY = Math.max(TOP_BAR_HEIGHT, d.y);
           moveWindow(windowState.id, { x: d.x, y: clampedY });
         }}
+        onResizeStart={() => setIsResizing(true)}
         onResizeStop={(_e, _direction, ref, _delta, position) => {
+          setIsResizing(false);
           resizeWindow(windowState.id, {
             width: parseInt(ref.style.width, 10),
             height: parseInt(ref.style.height, 10),
@@ -174,6 +177,10 @@ export function Window({ window: windowState, children }: WindowProps) {
         }}
         style={{
           pointerEvents: isMinimized ? "none" : "auto",
+          transition:
+            isDragging || isResizing
+              ? "none"
+              : "width 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.3s ease-in-out",
         }}
         enableResizing={
           isMaximized || isMinimized
