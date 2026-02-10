@@ -2,7 +2,8 @@
 
 import { useRef, useState, useEffect } from "react";
 import { Rnd } from "react-rnd";
-import { Box, IconButton, Typography, keyframes } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -19,16 +20,7 @@ interface WindowProps {
 const TOP_BAR_HEIGHT = 40;
 const MOBILE_PADDING = 16;
 
-const scaleIn = keyframes`
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-`;
+
 
 function useViewportSize() {
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -59,14 +51,7 @@ export function Window({ window: windowState, children }: WindowProps) {
 
   const rndRef = useRef<Rnd>(null);
   const viewport = useViewportSize();
-  const [isMounting, setIsMounting] = useState(true);
-
   const [isDragging, setIsDragging] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsMounting(false), 50);
-    return () => clearTimeout(timer);
-  }, []);
 
   if (!windowState.isOpen) {
     return null;
@@ -117,110 +102,130 @@ export function Window({ window: windowState, children }: WindowProps) {
   const iconX = dockX + dockPadding + windowIndex * (iconSize + iconGap) + iconSize / 2;
   const iconY = viewport.height - 16 - 32;
 
-  const animationStyle = isMinimized
-    ? {
-        opacity: 0,
-        transform: `translate(${iconX - targetWidth / 2}px, ${iconY - targetHeight / 2}px) scale(0.1)`,
-      }
-    : {
-        opacity: 1,
-        transform: undefined,
-      };
+  const centerX = targetX + targetWidth / 2;
+  const centerY = targetY + targetHeight / 2;
 
-  const transitionCurve = isMinimized 
-    ? "cubic-bezier(0.4, 0, 1, 1)"
-    : "cubic-bezier(0, 0, 0.2, 1)";
+  const deltaX = iconX - centerX;
+  const deltaY = iconY - centerY;
 
   return (
-    <Rnd
-      ref={rndRef}
-      size={{ width: targetWidth, height: targetHeight }}
-      position={{ x: targetX, y: targetY }}
-      minWidth={Math.min(300, viewport.width - MOBILE_PADDING * 2)}
-      minHeight={200}
-      maxWidth={viewport.width}
-      maxHeight={viewport.height - TOP_BAR_HEIGHT}
-      bounds="window"
-      dragHandleClassName="window-drag-handle"
-      disableDragging={isMaximized || isMinimized}
-      onDragStart={() => {
-        focusWindow(windowState.id);
-        setIsDragging(true);
-      }}
-      onDrag={(_e, d) => {
-        if (d.y < TOP_BAR_HEIGHT) {
-          d.y = TOP_BAR_HEIGHT;
-        }
-      }}
-      onDragStop={(_e, d) => {
-        setIsDragging(false);
-        const clampedY = Math.max(TOP_BAR_HEIGHT, d.y);
-        moveWindow(windowState.id, { x: d.x, y: clampedY });
-      }}
-      onResizeStop={(_e, _direction, ref, _delta, position) => {
-        resizeWindow(windowState.id, {
-          width: parseInt(ref.style.width, 10),
-          height: parseInt(ref.style.height, 10),
-        });
-        moveWindow(windowState.id, { x: position.x, y: position.y });
-      }}
-      style={{
-        zIndex: windowState.zIndex,
-        transition: (isMounting || isDragging) ? "none" : `all 0.5s ${transitionCurve}`,
-        pointerEvents: isMinimized ? "none" : "auto",
-        ...animationStyle,
-      }}
-      enableResizing={
-        isMaximized || isMinimized
-          ? false
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={
+        isMinimized
+          ? {
+              x: deltaX,
+              y: deltaY,
+              scale: 0.1,
+              opacity: 0,
+              transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] }
+            }
           : {
-              top: true,
-              right: true,
-              bottom: true,
-              left: true,
-              topRight: true,
-              bottomRight: true,
-              bottomLeft: true,
-              topLeft: true,
+              x: 0,
+              y: 0,
+              scale: 1,
+              opacity: 1,
+              transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }
             }
       }
+      exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        zIndex: windowState.zIndex,
+        transformOrigin: `${centerX}px ${centerY}px`,
+      }}
     >
-      <Box
-        onClick={() => focusWindow(windowState.id)}
-        sx={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          backgroundColor: theme.palette.background.paper,
-          borderRadius: isMaximized ? 0 : "8px",
-          border: isMaximized ? "none" : `1px solid ${theme.palette.divider}`,
-          borderTop: `1px solid ${theme.palette.divider}`,
-          boxShadow: windowState.isFocused
-            ? `0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px ${theme.palette.primary.main}40`
-            : "0 4px 16px rgba(0, 0, 0, 0.3)",
-          overflow: "hidden",
-          animation: isMounting ? `${scaleIn} 0.4s cubic-bezier(0.2, 0.9, 0.2, 1)` : "none",
+      <Rnd
+        ref={rndRef}
+        size={{ width: targetWidth, height: targetHeight }}
+        position={{ x: targetX, y: targetY }}
+        minWidth={Math.min(300, viewport.width - MOBILE_PADDING * 2)}
+        minHeight={200}
+        maxWidth={viewport.width}
+        maxHeight={viewport.height - TOP_BAR_HEIGHT}
+        bounds="window"
+        dragHandleClassName="window-drag-handle"
+        disableDragging={isMaximized || isMinimized}
+        onDragStart={() => {
+          focusWindow(windowState.id);
+          setIsDragging(true);
         }}
+        onDrag={(_e, d) => {
+          if (d.y < TOP_BAR_HEIGHT) {
+            d.y = TOP_BAR_HEIGHT;
+          }
+        }}
+        onDragStop={(_e, d) => {
+          setIsDragging(false);
+          const clampedY = Math.max(TOP_BAR_HEIGHT, d.y);
+          moveWindow(windowState.id, { x: d.x, y: clampedY });
+        }}
+        onResizeStop={(_e, _direction, ref, _delta, position) => {
+          resizeWindow(windowState.id, {
+            width: parseInt(ref.style.width, 10),
+            height: parseInt(ref.style.height, 10),
+          });
+          moveWindow(windowState.id, { x: position.x, y: position.y });
+        }}
+        style={{
+          pointerEvents: isMinimized ? "none" : "auto",
+        }}
+        enableResizing={
+          isMaximized || isMinimized
+            ? false
+            : {
+                top: true,
+                right: true,
+                bottom: true,
+                left: true,
+                topRight: true,
+                bottomRight: true,
+                bottomLeft: true,
+                topLeft: true,
+              }
+        }
       >
-        <TitleBar
-          windowState={windowState}
-          isMaximized={isMaximized}
-          onMinimize={() => minimizeWindow(windowState.id)}
-          onMaximize={() => maximizeWindow(windowState.id)}
-          onClose={() => closeWindow(windowState.id)}
-        />
         <Box
+          onPointerDown={() => focusWindow(windowState.id)}
           sx={{
-            flex: 1,
-            overflow: "auto",
-            backgroundColor: theme.palette.background.default,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            backgroundColor: theme.palette.background.paper,
+            borderRadius: isMaximized ? 0 : "8px",
+            border: isMaximized ? "none" : `1px solid ${theme.palette.divider}`,
+            borderTop: `1px solid ${theme.palette.divider}`,
+            boxShadow: windowState.isFocused
+              ? `0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px ${theme.palette.primary.main}40`
+              : "0 4px 16px rgba(0, 0, 0, 0.3)",
+            overflow: "hidden",
           }}
         >
-          {children}
+          <TitleBar
+            windowState={windowState}
+            isMaximized={isMaximized}
+            onMinimize={() => minimizeWindow(windowState.id)}
+            onMaximize={() => maximizeWindow(windowState.id)}
+            onClose={() => closeWindow(windowState.id)}
+          />
+          <Box
+            sx={{
+              flex: 1,
+              overflow: "auto",
+              backgroundColor: theme.palette.background.default,
+            }}
+          >
+            {children}
+          </Box>
         </Box>
-      </Box>
-    </Rnd>
+      </Rnd>
+    </motion.div>
   );
 }
 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Box, keyframes } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { AnimatePresence } from "framer-motion";
 import { useWindowManager } from "@/contexts/window-manager-context";
 import { TopBar } from "./top-bar";
 import { DesktopIcon } from "./desktop-icon";
@@ -110,15 +111,17 @@ export function Desktop({ apps }: DesktopProps) {
         ))}
       </Box>
 
-      {state.windows.map((window) => {
-        const app = getApp(window.appId);
-        if (!app) return null;
-        return (
-          <Window key={window.id} window={window}>
-            {app.component}
-          </Window>
-        );
-      })}
+      <AnimatePresence>
+        {state.windows.map((window) => {
+          const app = getApp(window.appId);
+          if (!app) return null;
+          return (
+            <Window key={window.id} window={window}>
+              {app.component}
+            </Window>
+          );
+        })}
+      </AnimatePresence>
 
       <Dock />
     </Box>
