@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import ThemeRegistry from "@/lib/theme-registry";
 import { siteConfig } from "@/config/site";
@@ -21,9 +20,9 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body>
-        <NextIntlClientProvider messages={messages}>
-          <ThemeRegistry>{children}</ThemeRegistry>
-        </NextIntlClientProvider>
+        <ThemeRegistry messages={messages} locale={locale}>
+          {children}
+        </ThemeRegistry>
       </body>
     </html>
   );

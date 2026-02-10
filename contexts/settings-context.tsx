@@ -102,10 +102,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 	const updateSettings = useCallback((updates: Partial<Settings>) => {
 		setSettings((prev) => ({ ...prev, ...updates }));
 
-		// If language changed, set cookie and reload for next-intl
+		// If language changed, set cookie for persistence (optional in static export)
 		if (updates.language) {
 			document.cookie = `locale=${updates.language};path=/;max-age=31536000`;
-			router.refresh();
+			// router.refresh(); // Disabled for static export to prevent reload flicker
 		}
 	}, []);
 
@@ -118,7 +118,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 		}
 		// Reset language cookie to default
 		document.cookie = `locale=${defaultSettings.language};path=/;max-age=31536000`;
-		router.refresh();
+		// router.refresh(); // Disabled for static export
 	}, []);
 
 	return (

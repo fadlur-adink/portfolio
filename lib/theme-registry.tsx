@@ -7,6 +7,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { SettingsProvider, useSettings } from "@/contexts/settings-context";
 import { createAppTheme } from "@/config/theme";
+import { AbstractIntlMessages } from "next-intl";
+import { DynamicI18nProvider } from "@/components/i18n/dynamic-i18n-provider";
 
 function DynamicThemeProvider({ children }: { children: React.ReactNode }) {
 	const { currentScheme, settings } = useSettings();
@@ -25,13 +27,19 @@ function DynamicThemeProvider({ children }: { children: React.ReactNode }) {
 
 export default function ThemeRegistry({
 	children,
+	messages,
+	locale,
 }: {
 	children: React.ReactNode;
+	messages: AbstractIntlMessages;
+	locale: string;
 }) {
 	return (
 		<AppRouterCacheProvider>
 			<SettingsProvider>
-				<DynamicThemeProvider>{children}</DynamicThemeProvider>
+				<DynamicI18nProvider initialMessages={messages} initialLocale={locale}>
+					<DynamicThemeProvider>{children}</DynamicThemeProvider>
+				</DynamicI18nProvider>
 			</SettingsProvider>
 		</AppRouterCacheProvider>
 	);
