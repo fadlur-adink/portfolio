@@ -130,6 +130,7 @@ export function Window({ window: windowState, children }: WindowProps) {
             }
       }
       exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+      className={isMaximized ? "maximized-window-wrapper" : undefined}
       style={{
         position: "absolute",
         top: 0,
@@ -175,6 +176,7 @@ export function Window({ window: windowState, children }: WindowProps) {
           });
           moveWindow(windowState.id, { x: position.x, y: position.y });
         }}
+        className={isMaximized ? "maximized-rnd" : undefined}
         style={{
           margin: 0,
           pointerEvents: isMinimized ? "none" : "auto",
