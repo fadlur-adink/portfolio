@@ -27,7 +27,7 @@ export function AppearancePanel() {
 				<Box
 					sx={{
 						display: "grid",
-						gridTemplateColumns: "repeat(4, 1fr)",
+						gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
 						gap: 1.5,
 					}}
 				>

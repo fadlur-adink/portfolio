@@ -50,13 +50,13 @@ export function AboutPanel() {
 				{t("about")}
 			</Typography>
 
-			<Box
-				sx={{
-					display: "flex",
-					gap: 4,
-					flexDirection: { xs: "column", sm: "row" },
-				}}
-			>
+				<Box
+					sx={{
+						display: "flex",
+						gap: 4,
+						flexWrap: "wrap",
+					}}
+				>
 				<Box
 					component="pre"
 					sx={{
