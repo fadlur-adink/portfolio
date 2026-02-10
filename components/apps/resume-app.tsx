@@ -3,10 +3,13 @@
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import DescriptionIcon from "@mui/icons-material/Description";
+import { siteConfig } from "@/config/site";
 
 export function ResumeApp() {
 	const theme = useTheme();
-	const pdfUrl = "/Fadlur_Rahman_Front_End_Developer_CV.pdf";
+	const isProd = process.env.NODE_ENV === "production";
+	const basePath = isProd ? `/${siteConfig.repoName}` : "";
+	const pdfUrl = `${basePath}/Fadlur_Rahman_Front_End_Developer_CV.pdf`;
 
 	return (
 		<Box

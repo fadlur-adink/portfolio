@@ -13,6 +13,7 @@ export const siteConfig = {
 		figma: "https://figma.com",
 	},
 	currentProject: "Portfolio",
+	repoName: "portfolio",
 } as const;
 
 export const navigation: NavItem[] = [
