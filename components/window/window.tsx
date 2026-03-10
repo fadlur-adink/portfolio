@@ -1,16 +1,13 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { Rnd } from "react-rnd";
-import { Box, IconButton, Typography } from "@mui/material";
-import { motion } from "framer-motion";
-import { useTheme } from "@mui/material/styles";
-import CloseIcon from "@mui/icons-material/Close";
-import RemoveIcon from "@mui/icons-material/Remove";
-import CropSquareIcon from "@mui/icons-material/CropSquare";
-import FilterNoneIcon from "@mui/icons-material/FilterNone";
-import { WindowState } from "@/types/window";
 import { useWindowManager } from "@/contexts/window-manager-context";
+import { WindowState } from "@/types/window";
+import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { Rnd } from "react-rnd";
+import TitleBar from "./TitleBar";
 
 interface WindowProps {
   window: WindowState;
@@ -93,7 +90,7 @@ export function Window({ window: windowState, children }: WindowProps) {
   }
 
   const windowIndex = state.windows.findIndex((w) => w.id === windowState.id);
-  
+
   const iconSize = 48;
   const iconGap = 8;
   const dockPadding = 12;
@@ -115,19 +112,19 @@ export function Window({ window: windowState, children }: WindowProps) {
       animate={
         isMinimized
           ? {
-              x: deltaX,
-              y: deltaY,
-              scale: 0.1,
-              opacity: 0,
-              transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] }
-            }
+            x: deltaX,
+            y: deltaY,
+            scale: 0.1,
+            opacity: 0,
+            transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] }
+          }
           : {
-              x: 0,
-              y: 0,
-              scale: 1,
-              opacity: 1,
-              transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }
-            }
+            x: 0,
+            y: 0,
+            scale: 1,
+            opacity: 1,
+            transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }
+          }
       }
       exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
       className={isMaximized ? "maximized-window-wrapper" : undefined}
@@ -190,15 +187,15 @@ export function Window({ window: windowState, children }: WindowProps) {
           isMaximized || isMinimized
             ? false
             : {
-                top: true,
-                right: true,
-                bottom: true,
-                left: true,
-                topRight: true,
-                bottomRight: true,
-                bottomLeft: true,
-                topLeft: true,
-              }
+              top: true,
+              right: true,
+              bottom: true,
+              left: true,
+              topRight: true,
+              bottomRight: true,
+              bottomLeft: true,
+              topLeft: true,
+            }
         }
       >
         <Box
@@ -240,123 +237,3 @@ export function Window({ window: windowState, children }: WindowProps) {
   );
 }
 
-interface TitleBarProps {
-  windowState: WindowState;
-  isMaximized: boolean;
-  onMinimize: () => void;
-  onMaximize: () => void;
-  onClose: () => void;
-}
-
-function TitleBar({
-  windowState,
-  isMaximized,
-  onMinimize,
-  onMaximize,
-  onClose,
-}: TitleBarProps) {
-  const theme = useTheme();
-  const handleButtonInteraction = (
-    e: React.MouseEvent | React.TouchEvent | React.PointerEvent,
-    action: () => void
-  ) => {
-    e.stopPropagation();
-    e.preventDefault();
-    action();
-  };
-
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: 36,
-        backgroundColor: windowState.isFocused
-          ? theme.palette.background.default
-          : theme.palette.background.paper,
-        borderBottom: `1px solid ${theme.palette.divider}`,
-        px: 1,
-        userSelect: "none",
-      }}
-    >
-      <Box
-        className="window-drag-handle"
-        sx={{
-          flex: 1,
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          cursor: isMaximized ? "default" : "grab",
-          "&:active": {
-            cursor: isMaximized ? "default" : "grabbing",
-          },
-        }}
-      >
-        <Typography
-          variant="body2"
-          sx={{
-            color: theme.palette.text.primary,
-            fontWeight: 500,
-            ml: 1,
-          }}
-        >
-          {windowState.title}
-        </Typography>
-      </Box>
-
-      <Box sx={{ display: "flex", gap: 0.5 }}>
-        <IconButton
-          size="small"
-          onPointerDown={(e) => handleButtonInteraction(e, onMinimize)}
-          sx={{
-            width: 32,
-            height: 32,
-            color: theme.palette.text.secondary,
-            touchAction: "manipulation",
-            "&:hover": {
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-            },
-          }}
-        >
-          <RemoveIcon sx={{ fontSize: 16 }} />
-        </IconButton>
-        <IconButton
-          size="small"
-          onPointerDown={(e) => handleButtonInteraction(e, onMaximize)}
-          sx={{
-            width: 32,
-            height: 32,
-            color: theme.palette.text.secondary,
-            touchAction: "manipulation",
-            "&:hover": {
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-            },
-          }}
-        >
-          {isMaximized ? (
-            <FilterNoneIcon sx={{ fontSize: 14 }} />
-          ) : (
-            <CropSquareIcon sx={{ fontSize: 16 }} />
-          )}
-        </IconButton>
-        <IconButton
-          size="small"
-          onPointerDown={(e) => handleButtonInteraction(e, onClose)}
-          sx={{
-            width: 32,
-            height: 32,
-            color: theme.palette.text.secondary,
-            touchAction: "manipulation",
-            "&:hover": {
-              backgroundColor: "rgba(239, 68, 68, 0.8)",
-              color: theme.palette.text.primary,
-            },
-          }}
-        >
-          <CloseIcon sx={{ fontSize: 16 }} />
-        </IconButton>
-      </Box>
-    </Box>
-  );
-}
