@@ -1,9 +1,21 @@
+import type { Metadata } from "next";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { ProjectCard, SectionHeader } from "@/components/ui";
 import { completeApps, smallProjects } from "@/data/projects";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "Explore the portfolio of Fadlur Rahman — front-end projects built with React, Next.js, React Native, and more. From web dashboards to mobile apps.",
+  openGraph: {
+    title: "Projects | Fadlur Rahman",
+    description:
+      "Explore the portfolio of Fadlur Rahman — front-end projects built with React, Next.js, React Native, and more.",
+  },
+};
 
 export default function ProjectsPage() {
   return (
