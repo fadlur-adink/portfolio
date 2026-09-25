@@ -1,4 +1,16 @@
 {
+  "Loading": {
+    "title": "Menyiapkan pengalaman portofolio Anda",
+    "progress": "Tugas persiapan yang selesai",
+    "settings": "Memulihkan preferensi Anda…",
+    "language": "Memuat bahasa Anda…",
+    "resources": "Memuat sumber daya halaman…",
+    "fonts": "Menyiapkan font…",
+    "ready": "Membuka ruang kerja Anda…",
+    "slow": "Proses ini memerlukan waktu lebih lama. Periksa koneksi Anda atau muat ulang untuk mencoba lagi.",
+    "reload": "Muat ulang halaman",
+    "noScript": "JavaScript diperlukan untuk portofolio interaktif ini. Aktifkan JavaScript di browser Anda dan muat ulang halaman."
+  },
   "Settings": {
     "title": "Pengaturan",
     "appearance": "Tampilan",

@@ -7,7 +7,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { SettingsProvider, useSettings } from "@/contexts/settings-context";
 import { createAppTheme } from "@/config/theme";
-import { AbstractIntlMessages } from "next-intl";
+import { type AbstractIntlMessages, type Locale } from "next-intl";
+import { InitialLoading } from "@/components/layout/initial-loading";
 import { DynamicI18nProvider } from "@/components/i18n/dynamic-i18n-provider";
 
 function DynamicThemeProvider({ children }: { children: React.ReactNode }) {
@@ -20,7 +21,7 @@ function DynamicThemeProvider({ children }: { children: React.ReactNode }) {
 	return (
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
-			{children}
+			<InitialLoading>{children}</InitialLoading>
 		</ThemeProvider>
 	);
 }
@@ -32,7 +33,7 @@ export default function ThemeRegistry({
 }: {
 	children: React.ReactNode;
 	messages: AbstractIntlMessages;
-	locale: string;
+	locale: Locale;
 }) {
 	return (
 		<AppRouterCacheProvider>

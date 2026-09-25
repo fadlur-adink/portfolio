@@ -53,8 +53,8 @@ export function Desktop({ apps }: DesktopProps) {
 
   useEffect(() => {
     apps.forEach((app) => registerApp(app));
-    const timer = setTimeout(() => setIsLoaded(true), 100);
-    return () => clearTimeout(timer);
+    const frame = requestAnimationFrame(() => setIsLoaded(true));
+    return () => cancelAnimationFrame(frame);
   }, [apps, registerApp]);
 
   return (

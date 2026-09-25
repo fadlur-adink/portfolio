@@ -13,6 +13,105 @@ html {
   scroll-padding-top: 100px;
 }
 
+/* Keep the server-rendered splash visible while the application hydrates. */
+.initial-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  overflow: auto;
+  font-family: system-ui, sans-serif;
+  text-align: center;
+}
+
+.initial-loading-panel {
+  width: min(100%, 360px);
+}
+
+.initial-loading-logo {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 24px;
+  border: 1px solid var(--loading-accent);
+  border-radius: 20px;
+  color: var(--loading-accent);
+  font: 700 26px monospace;
+}
+
+.initial-loading h1 {
+  margin: 0;
+  font-size: 28px;
+  letter-spacing: -0.04em;
+}
+
+.initial-loading-subtitle,
+.initial-loading-progress p,
+.initial-loading-recovery {
+  color: var(--loading-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.initial-loading-subtitle {
+  margin: 8px 0 32px;
+}
+
+.initial-loading progress {
+  display: block;
+  width: 100%;
+  height: 4px;
+  appearance: none;
+  border: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--loading-track);
+  accent-color: var(--loading-accent);
+}
+
+.initial-loading progress::-webkit-progress-bar {
+  background: var(--loading-track);
+}
+
+.initial-loading progress::-webkit-progress-value {
+  background: var(--loading-accent);
+}
+
+.initial-loading progress::-moz-progress-bar {
+  background: var(--loading-accent);
+}
+
+.initial-loading-recovery {
+  visibility: hidden;
+  animation: loading-recovery 0s 15s forwards;
+}
+
+.initial-loading-recovery a {
+  display: inline-block;
+  padding: 8px 16px;
+  color: var(--loading-accent);
+  text-underline-offset: 4px;
+}
+
+.initial-loading-recovery a:focus-visible {
+  outline: 2px solid var(--loading-accent);
+  outline-offset: 2px;
+}
+
+.initial-loading-content[data-loading="true"] {
+  visibility: hidden;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* This timer only reveals recovery help; it never completes startup. */
+@keyframes loading-recovery {
+  to { visibility: visible; }
+}
+
 /* Force window to fill viewport when maximized */
 .maximized-rnd {
   position: fixed !important;

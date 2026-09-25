@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { NextIntlClientProvider, AbstractIntlMessages } from "next-intl";
+import { NextIntlClientProvider, type AbstractIntlMessages, type Locale } from "next-intl";
 import { useSettings } from "@/contexts/settings-context";
 
 export function DynamicI18nProvider({
@@ -11,33 +11,51 @@ export function DynamicI18nProvider({
 }: {
 	children: React.ReactNode;
 	initialMessages: AbstractIntlMessages;
-	initialLocale: string;
+	initialLocale: Locale;
 }) {
-	const { settings } = useSettings();
-	const [messages, setMessages] = useState(initialMessages);
+	const { settings, isHydrated, updateSettings } = useSettings();
+	const [translation, setTranslation] = useState({
+		locale: initialLocale,
+		messages: initialMessages,
+	});
 
 	useEffect(() => {
+		if (!isHydrated) return;
+		let cancelled = false;
+
 		async function loadMessages() {
-			// If the language matches the initially loaded one (e.g. 'en'), 
-            // we could potentially use initialMessages, but fetching ensures consistency
-            // if we navigated away and back.
-            // However, checking against initialLocale saves a network request on first load.
-            if (settings.language === initialLocale && messages === initialMessages) {
-                return; 
-            }
+			if (settings.language === initialLocale) {
+				setTranslation({ locale: initialLocale, messages: initialMessages });
+				return;
+			}
 
 			try {
-				const msgs = (await import(`../../messages/${settings.language}.json`)).default;
-				setMessages(msgs);
+				const messages = (await import(`../../messages/${settings.language}.json`)).default;
+				if (!cancelled) {
+					setTranslation({ locale: settings.language, messages });
+				}
 			} catch (error) {
-				console.error("Failed to load messages", error);
+				if (cancelled) return;
+				console.error("Failed to load messages; using the default language", error);
+				setTranslation({ locale: initialLocale, messages: initialMessages });
+				updateSettings({ language: initialLocale });
 			}
 		}
-		loadMessages();
-	}, [settings.language, initialLocale, initialMessages, messages]);
+
+		void loadMessages();
+		return () => { cancelled = true; };
+	}, [settings.language, isHydrated, initialLocale, initialMessages, updateSettings]);
+
+	useEffect(() => {
+		document.documentElement.lang = translation.locale;
+	}, [translation.locale]);
 
 	return (
-		<NextIntlClientProvider locale={settings.language} messages={messages}>
+		<NextIntlClientProvider
+			locale={translation.locale}
+			messages={translation.messages}
+			timeZone="UTC"
+		>
 			{children}
 		</NextIntlClientProvider>
 	);

@@ -1,4 +1,16 @@
 {
+  "Loading": {
+    "title": "Starting your portfolio experience",
+    "progress": "Startup tasks completed",
+    "settings": "Restoring your preferences…",
+    "language": "Loading your language…",
+    "resources": "Loading page resources…",
+    "fonts": "Preparing fonts…",
+    "ready": "Opening your workspace…",
+    "slow": "Taking longer than expected. Check your connection or reload to try again.",
+    "reload": "Reload page",
+    "noScript": "JavaScript is required for this interactive portfolio. Enable it in your browser and reload the page."
+  },
   "Settings": {
     "title": "Settings",
     "appearance": "Appearance",

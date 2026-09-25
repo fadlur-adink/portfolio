@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 
 interface SettingsContextType {
 	settings: Settings;
+	isHydrated: boolean;
 	currentScheme: ColorScheme;
 	updateSettings: (updates: Partial<Settings>) => void;
 	resetSettings: () => void;
@@ -75,6 +76,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
 	useEffect(() => {
 		const stored = getStoredSettings();
+		const scheme = colorSchemes.find((s) => s.id === stored.colorScheme) || colorSchemes[0];
+		applySettingsToDocument(stored, scheme);
 		setSettings(stored);
 		setIsHydrated(true);
 	}, []);
@@ -125,6 +128,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 		<SettingsContext.Provider
 			value={{
 				settings,
+				isHydrated,
 				currentScheme,
 				updateSettings,
 				resetSettings,
