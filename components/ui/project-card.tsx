@@ -8,9 +8,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CardActions from "@mui/material/CardActions";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import type { Project } from "@/types";
-
-interface ProjectCardProps extends Project {}
 
 const DESCRIPTION_LIMIT = 100;
 
@@ -19,10 +18,13 @@ export default function ProjectCard({
   description,
   technologies,
   image,
-  liveLink,
-  repoLink,
-}: ProjectCardProps) {
+  liveLink = "",
+  repoLink = "",
+  repoPrivate = false,
+}: Project) {
   const [isExpanded, setIsExpanded] = React.useState(false);
+  const hasLiveLink = Boolean(liveLink && liveLink !== "#");
+  const hasRepoLink = Boolean(repoLink && repoLink !== "#");
 
   const shouldTruncate = description.length > DESCRIPTION_LIMIT;
   const displayDescription =
@@ -86,25 +88,36 @@ export default function ProjectCard({
           </Button>
         )}
       </CardContent>
-      <CardActions sx={{ p: 2, pt: 0 }}>
-        <Button
-          variant="outlined"
-          size="small"
-          href={liveLink || "#"}
-          startIcon={<span>{"<~>"}</span>}
-        >
-          Live
-        </Button>
-        <Button
-          variant="outlined"
-          size="small"
-          href={repoLink || "#"}
-          color="inherit"
-          startIcon={<span>{">="}</span>}
-        >
-          Cached
-        </Button>
-      </CardActions>
+      {(hasLiveLink || hasRepoLink) && (
+        <CardActions sx={{ p: 2, pt: 0, flexWrap: "wrap", gap: 1 }}>
+          {hasLiveLink && (
+            <Button
+              variant="outlined"
+              size="small"
+              href={liveLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              startIcon={<span>{"<~>"}</span>}
+            >
+              Live
+            </Button>
+          )}
+          {hasRepoLink && (
+            <Button
+              variant="outlined"
+              size="small"
+              href={repoLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="inherit"
+              startIcon={<GitHubIcon />}
+              aria-label={`View ${title} on GitHub${repoPrivate ? " (private repository, access required)" : ""}`}
+            >
+              {repoPrivate ? "GitHub (Private)" : "GitHub"}
+            </Button>
+          )}
+        </CardActions>
+      )}
     </Card>
   );
 }

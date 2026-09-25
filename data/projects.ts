@@ -1,5 +1,54 @@
 import type { Project } from "@/types";
 
+const githubProjects: Project[] = [
+	{
+		title: "JDPOS",
+		description:
+			"A mobile point-of-sale application for cashier transactions, payments, product management, stocktaking, purchase orders, and sales reports. Built with React Native and Expo, with Bluetooth receipt-printer integration.",
+		technologies: ["React Native", "Expo", "TypeScript", "Zustand", "TanStack Query"],
+		repoLink: "https://github.com/fadlur-adink/JDPOS",
+		repoPrivate: true,
+	},
+	{
+		title: "Portfolio",
+		description:
+			"An OS-style developer portfolio with draggable and resizable app windows, a desktop dock, customizable themes, and instant English/Indonesian language switching. Built with Next.js, React, and Material UI and deployed to GitHub Pages.",
+		technologies: ["Next.js", "React", "TypeScript", "Material UI", "Framer Motion"],
+		liveLink: "https://fadlur-adink.github.io/portfolio",
+		repoLink: "https://github.com/fadlur-adink/portfolio",
+	},
+	{
+		title: "Vigil",
+		description:
+			"A team-wide AI code review platform for GitHub pull requests and GitLab merge requests. Processes events through a background review pipeline and provides a shared dashboard with review reports, history, analytics, and reviewer suggestions without writing back to repositories.",
+		technologies: ["Next.js", "React", "TypeScript", "PostgreSQL", "Drizzle ORM", "Tailwind CSS"],
+		repoLink: "https://github.com/fadlur-adink/vigil",
+		repoPrivate: true,
+	},
+	{
+		title: "SkillIssue",
+		description:
+			"A playful VS Code extension that reacts to failed builds, tests, lint checks, and compilation with a laughing-cat panel and audio. Observes tasks, Jest test runs, and terminal commands without changing their output or exit codes.",
+		technologies: ["TypeScript", "VS Code API", "Node.js", "Mocha"],
+		repoLink: "https://github.com/fadlur-adink/skillissue-vscode-extension",
+	},
+	{
+		title: "Argos",
+		description:
+			"A self-hosted AI code review assistant that turns GitLab merge request email notifications into private, structured review reports. Uses isolated Git worktrees, SQLite deduplication, a web dashboard, and optional Telegram, email, and desktop notifications.",
+		technologies: ["TypeScript", "Node.js", "Express", "SQLite", "Google Apps Script"],
+		repoLink: "https://github.com/fadlur-adink/argos",
+	},
+	{
+		title: "SICEM v1",
+		description:
+			"An agency-focused website builder with theme-based sections, visual content editing, and live previews. Combines a reusable rendering system, a client-facing CMS, and a hybrid export pipeline for static pages and dynamic content.",
+		technologies: ["Next.js", "React", "TypeScript", "Zustand", "Drizzle ORM", "Tailwind CSS"],
+		repoLink: "https://github.com/fadlur-adink/sicem-v1",
+		repoPrivate: true,
+	},
+];
+
 export const projects: Project[] = [
 	{
 		title: "Coop Access Dashboard",
@@ -85,6 +134,7 @@ export const projects: Project[] = [
 		liveLink: "#",
 		repoLink: "#",
 	},
+	...githubProjects,
 ];
 
 // Featured projects for home page (first 5)
@@ -92,6 +142,7 @@ export const featuredProjects = projects.slice(0, 5);
 
 // Additional projects for projects page
 export const completeApps: Project[] = [
+	...githubProjects,
 	{
 		title: "Coop Access Dashboard",
 		description:

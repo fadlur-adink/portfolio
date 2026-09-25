@@ -5,6 +5,7 @@ export interface Project {
   image?: string;
   liveLink?: string;
   repoLink?: string;
+  repoPrivate?: boolean;
 }
 
 export interface SkillGroup {
