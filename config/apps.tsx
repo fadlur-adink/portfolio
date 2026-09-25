@@ -21,7 +21,7 @@ export const apps: AppDefinition[] = [
     id: "welcome",
     title: "Welcome",
     icon: <HomeIcon />,
-    defaultSize: { width: 500, height: 550 },
+    defaultSize: { width: 600, height: 560 },
     component: <WelcomeApp />,
   },
   {

@@ -2,9 +2,10 @@
 
 import { useWindowManager } from "@/contexts/window-manager-context";
 import { WindowState } from "@/types/window";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { useTheme } from "@mui/material/styles";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Rnd } from "react-rnd";
 import TitleBar from "./TitleBar";
@@ -36,6 +37,8 @@ function useViewportSize() {
 
 export function Window({ window: windowState, children }: WindowProps) {
   const theme = useTheme();
+  const t = useTranslations("Desktop");
+  const reduceMotion = useReducedMotion();
   const {
     state,
     closeWindow,
@@ -108,25 +111,27 @@ export function Window({ window: windowState, children }: WindowProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
+      initial={reduceMotion ? false : { opacity: 0, scale: 0.96, y: 12 }}
+      inert={isMinimized}
+      aria-hidden={isMinimized || undefined}
       animate={
         isMinimized
           ? {
-            x: deltaX,
-            y: deltaY,
-            scale: 0.1,
+            x: reduceMotion ? 0 : deltaX,
+            y: reduceMotion ? 0 : deltaY,
+            scale: reduceMotion ? 1 : 0.08,
             opacity: 0,
-            transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] }
+            transition: { duration: reduceMotion ? 0 : 0.24, ease: [0.4, 0, 1, 1] }
           }
           : {
             x: 0,
             y: 0,
             scale: 1,
             opacity: 1,
-            transition: { duration: 0.4, ease: [0.2, 0.8, 0.2, 1] }
+            transition: { duration: reduceMotion ? 0 : 0.24, ease: [0.22, 1, 0.36, 1] }
           }
       }
-      exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+      exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.96, transition: { duration: reduceMotion ? 0 : 0.12 } }}
       className={isMaximized ? "maximized-window-wrapper" : undefined}
       style={{
         position: "absolute",
@@ -136,7 +141,7 @@ export function Window({ window: windowState, children }: WindowProps) {
         height: "100%",
         pointerEvents: "none",
         zIndex: windowState.zIndex,
-        transformOrigin: isMinimized ? `${centerX}px ${centerY}px` : "center",
+        transformOrigin: `${centerX}px ${centerY}px`,
       }}
     >
       <Rnd
@@ -179,9 +184,9 @@ export function Window({ window: windowState, children }: WindowProps) {
           pointerEvents: isMinimized ? "none" : "auto",
           zIndex: windowState.zIndex,
           transition:
-            isDragging || isResizing
+            isDragging || isResizing || reduceMotion
               ? "none"
-              : "width 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.3s ease-in-out",
+              : "width 0.18s steps(5), height 0.18s steps(5), transform 0.18s steps(5)",
         }}
         enableResizing={
           isMaximized || isMinimized
@@ -199,6 +204,8 @@ export function Window({ window: windowState, children }: WindowProps) {
         }
       >
         <Box
+          role="region"
+          aria-label={windowState.title}
           onPointerDown={() => focusWindow(windowState.id)}
           sx={{
             width: "100%",
@@ -206,12 +213,12 @@ export function Window({ window: windowState, children }: WindowProps) {
             display: "flex",
             flexDirection: "column",
             backgroundColor: theme.palette.background.paper,
-            borderRadius: isMaximized ? 0 : "8px",
-            border: isMaximized ? "none" : `1px solid ${theme.palette.divider}`,
-            borderTop: `1px solid ${theme.palette.divider}`,
-            boxShadow: windowState.isFocused
-              ? `0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px ${theme.palette.primary.main}40`
-              : "0 4px 16px rgba(0, 0, 0, 0.3)",
+            borderRadius: isMaximized ? 0 : "4px",
+            border: `2px solid ${theme.palette.retro.ink}`,
+            boxShadow: isMaximized ? "none" : windowState.isFocused
+              ? `7px 7px 0 ${theme.palette.retro.ink}`
+              : `4px 4px 0 ${theme.palette.retro.ink}`,
+            p: "2px",
             overflow: "hidden",
           }}
         >
@@ -225,11 +232,20 @@ export function Window({ window: windowState, children }: WindowProps) {
           <Box
             sx={{
               flex: 1,
+              minHeight: 0,
               overflow: "auto",
-              backgroundColor: theme.palette.background.default,
+              backgroundColor: theme.palette.background.paper,
+              border: `1px solid ${theme.palette.divider}`,
+              borderTop: 0,
             }}
           >
             {children}
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, minHeight: 23, px: 1, backgroundColor: theme.palette.retro.surface, borderTop: `1px solid ${theme.palette.retro.ink}`, boxShadow: theme.palette.retro.bevel }}>
+            <Box sx={{ width: 6, height: 6, backgroundColor: theme.palette.primary.main }} />
+            <Typography variant="caption" sx={{ fontSize: "0.6rem", color: "text.secondary", flex: 1 }}>{t("ready")}</Typography>
+            <Typography variant="caption" sx={{ fontSize: "0.6rem", color: "text.secondary" }}>{windowState.appId}.exe</Typography>
+            {!isMaximized && <Box aria-hidden="true" sx={{ width: 12, height: 12, background: `repeating-linear-gradient(135deg, transparent 0 2px, ${theme.palette.text.secondary} 2px 3px)`, clipPath: "polygon(100% 0, 100% 100%, 0 100%)" }} />}
           </Box>
         </Box>
       </Rnd>

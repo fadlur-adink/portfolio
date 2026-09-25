@@ -1,8 +1,11 @@
+"use client";
+
 import aboutImage from "@/public/images/about.png";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, useTheme } from "@mui/material";
 import Image from "next/image";
 
 export function AboutApp() {
+	const theme = useTheme();
 	return (
 		<Box sx={{ p: 3 }}>
 			<Grid container spacing={4}>
@@ -27,7 +30,7 @@ export function AboutApp() {
 						variant="body1"
 						sx={{ color: "text.secondary", mb: 2 }}
 					>
-						I'm a dynamic Front End Engineer with over 4 years of
+						I&apos;m a dynamic Front End Engineer with over 4 years of
 						experience building web and mobile applications that
 						enhance user engagement and operational efficiency.
 					</Typography>
@@ -68,15 +71,17 @@ export function AboutApp() {
 							width: "100%",
 							maxWidth: 280,
 							aspectRatio: "3/4",
-							bgcolor: "background.paper",
-							borderTop: (theme) =>
-								`2px solid ${theme.palette.primary.main}`,
+							bgcolor: theme.palette.retro.surface,
+							border: `2px solid ${theme.palette.retro.ink}`,
+							boxShadow: `6px 6px 0 ${theme.palette.retro.accents[1]}, 8px 8px 0 ${theme.palette.retro.ink}`,
+							transform: "rotate(2deg)",
 							overflow: "hidden",
 						}}
 					>
 						<Image
 							src={aboutImage}
 							alt="About Image"
+							sizes="280px"
 							fill
 							style={{ objectFit: "cover" }}
 						/>

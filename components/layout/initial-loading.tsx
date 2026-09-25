@@ -65,8 +65,10 @@ export function InitialLoading({ children }: { children: ReactNode }) {
           className="initial-loading"
           aria-label={t("title")}
           style={{
-            backgroundColor: theme.palette.background.default,
+            backgroundColor: theme.palette.retro.desktop,
             color: theme.palette.text.primary,
+            "--loading-grid": theme.palette.retro.grid,
+            "--loading-highlight": theme.palette.background.paper,
             "--loading-accent": theme.palette.primary.main,
             "--loading-muted": theme.palette.text.secondary,
             "--loading-track": theme.palette.divider,

@@ -1,22 +1,27 @@
+"use client";
+
 import { skills } from "@/data/skills";
-import { Box, Grid, Typography } from "@mui/material";
+import { useTranslations } from "next-intl";
+import { Box, Grid, Typography, useTheme } from "@mui/material";
 
 export function SkillsApp() {
+	const theme = useTheme();
+	const t = useTranslations("Skills");
 	return (
 		<Box sx={{ p: 3 }}>
 			<Typography
 				variant="h5"
 				sx={{ color: "primary.main", mb: 3, fontWeight: 700 }}
 			>
-				Skills
+				{t("title")}
 			</Typography>
 			<Grid container spacing={2}>
-				{skills.map((skillGroup) => (
+				{skills.map((skillGroup, index) => (
 					<Grid key={skillGroup.category} size={{ xs: 12, sm: 6 }}>
 						<Box
 							sx={{
-								border: (theme) =>
-									`1px solid ${theme.palette.divider}`,
+								border: `2px solid ${theme.palette.retro.ink}`,
+								boxShadow: theme.palette.retro.shadow,
 								height: "100%",
 								borderRadius: "4px",
 								overflow: "hidden",
@@ -25,16 +30,16 @@ export function SkillsApp() {
 							<Box
 								sx={{
 									p: 1.5,
-									borderBottom: (theme) =>
-										`1px solid ${theme.palette.divider}`,
-									backgroundColor: "background.paper",
+									borderBottom: `2px solid ${theme.palette.retro.ink}`,
+									backgroundColor: theme.palette.retro.accents[index % theme.palette.retro.accents.length],
+									boxShadow: theme.palette.retro.bevel,
 								}}
 							>
 								<Typography
 									variant="subtitle2"
 									sx={{
 										fontWeight: 700,
-										color: "text.primary",
+										color: theme.palette.getContrastText(theme.palette.retro.accents[index % theme.palette.retro.accents.length]),
 									}}
 								>
 									{skillGroup.category}

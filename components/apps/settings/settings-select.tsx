@@ -1,3 +1,6 @@
+"use client";
+
+import { useId } from "react";
 import {
 	FormControl,
 	InputLabel,
@@ -17,10 +20,13 @@ export function SettingsSelect({
 	onChange: (e: SelectChangeEvent) => void;
 	options: { value: string; label: string }[];
 }) {
+	const labelId = useId();
 	return (
 		<FormControl fullWidth size="small">
-			<InputLabel sx={{ color: "text.secondary" }}>{label}</InputLabel>
+			<InputLabel id={labelId} sx={{ color: "text.secondary" }}>{label}</InputLabel>
 			<Select
+				labelId={labelId}
+				MenuProps={{ sx: { zIndex: 10001 } }}
 				value={value}
 				label={label}
 				onChange={onChange}

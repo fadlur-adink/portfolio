@@ -29,12 +29,14 @@ export function SettingsApp() {
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [width, setWidth] = useState(800);
+	const [showSidebar, setShowSidebar] = useState(true);
 
 	useEffect(() => {
 		if (!containerRef.current) return;
 		const observer = new ResizeObserver((entries) => {
 			if (entries[0].contentRect) {
 				setWidth(entries[0].contentRect.width);
+				if (entries[0].contentRect.width >= 600) setShowSidebar(true);
 			}
 		});
 		observer.observe(containerRef.current);
@@ -42,13 +44,6 @@ export function SettingsApp() {
 	}, []);
 
 	const isMobile = width < 600;
-	const [showSidebar, setShowSidebar] = useState(true);
-
-	useEffect(() => {
-		if (!isMobile) {
-			setShowSidebar(true);
-		}
-	}, [isMobile]);
 
 	const handleSidebarClick = (tab: SettingsTab) => {
 		setActiveTab(tab);
@@ -62,7 +57,7 @@ export function SettingsApp() {
 			ref={containerRef}
 			sx={{
 				height: "100%",
-				minHeight: 400,
+				minHeight: 0,
 				position: "relative",
 				overflow: "hidden",
 			}}
@@ -70,27 +65,22 @@ export function SettingsApp() {
 			<Box
 				sx={{
 					display: "flex",
-					width: isMobile ? "200%" : "100%",
+					width: "100%",
 					height: "100%",
-					transition: isMobile
-						? "transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1)"
-						: "none",
-					transform: isMobile
-						? showSidebar
-							? "translateX(0)"
-							: "translateX(-50%)"
-						: "none",
+					minWidth: 0,
 				}}
 			>
 				{/* Sidebar */}
 				<Box
 					sx={{
-						width: isMobile ? "50%" : 200,
+						width: isMobile ? "100%" : 200,
+						display: isMobile && !showSidebar ? "none" : "block",
 						flexShrink: 0,
 						height: "100%",
+						overflowY: "auto",
 						borderRight: isMobile
 							? "none"
-							: `1px solid ${theme.palette.divider}`,
+							: `2px solid ${theme.palette.retro.ink}`,
 						backgroundColor: theme.palette.background.default,
 						zIndex: 1,
 					}}
@@ -114,9 +104,10 @@ export function SettingsApp() {
 				{/* Content Area */}
 				<Box
 					sx={{
-						flex: isMobile ? "none" : 1,
-						width: isMobile ? "50%" : "auto",
-						display: "flex",
+						flex: 1,
+						minWidth: 0,
+						width: isMobile ? "100%" : "auto",
+						display: isMobile && showSidebar ? "none" : "flex",
 						flexDirection: "column",
 						overflow: "hidden",
 						backgroundColor: theme.palette.background.paper,
@@ -134,6 +125,7 @@ export function SettingsApp() {
 							}}
 						>
 							<IconButton
+								aria-label={t("title")}
 								onClick={() => setShowSidebar(true)}
 								size="small"
 								sx={{ mr: 1 }}

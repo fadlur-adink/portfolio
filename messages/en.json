@@ -11,6 +11,25 @@
     "reload": "Reload page",
     "noScript": "JavaScript is required for this interactive portfolio. Enable it in your browser and reload the page."
   },
+  "Desktop": {
+    "edition": "PERSONAL DESKTOP / EST. 2020",
+    "tagline": "A little retro. A lot of possibility.",
+    "hint": "Click an icon. Open a window. Make yourself at home.",
+    "personalize": "Make it yours",
+    "appearanceHint": "Different colors. Same personality.",
+    "openSettings": "Open appearance",
+    "noteTitle": "a-note-for-you.txt",
+    "note": "Good things start with a little curiosity.",
+    "explore": "Explore my projects",
+    "status": "ALL SYSTEMS CREATIVE",
+    "taskbar": "Open applications",
+    "minimize": "Minimize",
+    "maximize": "Maximize",
+    "restore": "Restore",
+    "close": "Close",
+    "ready": "Ready",
+    "resize": "Drag to resize"
+  },
   "Settings": {
     "title": "Settings",
     "appearance": "Appearance",
@@ -38,7 +57,15 @@
     "title": "Welcome",
     "subtitle": "Frontend Developer",
     "description": "Passionate about creating beautiful and functional web experiences. Click on the desktop icons to explore my portfolio.",
-    "openAbout": "Open About Me"
+    "openAbout": "About me",
+    "hello": "HELLO, WORLD!",
+    "intro": "A developer with a curious mind & a love for making things.",
+    "role": "Front End & Mobile Developer",
+    "currently": "Currently building",
+    "projects": "Explore projects",
+    "contact": "Let's talk",
+    "footer": "Built with curiosity. Best explored your way."
+
   },
   "Projects": {
     "title": "Projects"

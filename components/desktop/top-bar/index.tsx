@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Box, Typography, ClickAwayListener, IconButton, keyframes } from "@mui/material";
+import { Box, ButtonBase, Typography, ClickAwayListener, IconButton, keyframes } from "@mui/material";
+import { useLocale, useTranslations } from "next-intl";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useTheme } from "@mui/material/styles";
 import { siteConfig } from "@/config/site";
@@ -36,11 +37,11 @@ function Dropdown({ children, onClose }: DropdownProps) {
 					top: 48,
 					right: 0,
 					backgroundColor: theme.palette.background.paper,
-					border: `1px solid ${theme.palette.divider}`,
-					borderRadius: 2,
-					boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
+					border: `2px solid ${theme.palette.retro.ink}`,
+					borderRadius: "3px",
+					boxShadow: `${theme.palette.retro.shadow}, ${theme.palette.retro.bevel}`,
 					p: 2,
-					animation: `${fadeIn} 0.2s ease-out`,
+					animation: `${fadeIn} 0.16s steps(3)`,
 					zIndex: 10000,
 				}}
 			>
@@ -72,13 +73,15 @@ function Clock({ onClick }: { onClick: () => void }) {
 	}, []);
 
 	return (
-		<Typography
-			variant="body2"
+		<ButtonBase
 			onClick={onClick}
 			sx={{
 				color: theme.palette.text.primary,
 				fontWeight: 500,
-				fontFamily: "monospace",
+				fontFamily: "inherit",
+				fontSize: "0.7rem",
+				border: `1px solid ${theme.palette.divider}`,
+				boxShadow: `inset 1px 1px 0 ${theme.palette.divider}`,
 				cursor: "pointer",
 				px: 1,
 				py: 0.5,
@@ -89,19 +92,20 @@ function Clock({ onClick }: { onClick: () => void }) {
 			}}
 		>
 			{time}
-		</Typography>
+		</ButtonBase>
 	);
 }
 
 function CurrentDate({ onClick }: { onClick: () => void }) {
 	const [date, setDate] = useState<string>("");
 	const theme = useTheme();
+	const locale = useLocale();
 
 	useEffect(() => {
 		const updateDate = () => {
 			const now = new Date();
 			setDate(
-				now.toLocaleDateString("id-ID", {
+				now.toLocaleDateString(locale === "id" ? "id-ID" : "en-US", {
 					weekday: "short",
 					month: "short",
 					day: "numeric",
@@ -113,16 +117,18 @@ function CurrentDate({ onClick }: { onClick: () => void }) {
 		updateDate();
 		const interval = setInterval(updateDate, 60000);
 		return () => clearInterval(interval);
-	}, []);
+	}, [locale]);
 
 	return (
-		<Typography
-			variant="body2"
+		<ButtonBase
 			onClick={onClick}
 			sx={{
 				color: theme.palette.text.primary,
 				fontWeight: 500,
-				fontFamily: "monospace",
+				fontFamily: "inherit",
+				fontSize: "0.7rem",
+				border: `1px solid ${theme.palette.divider}`,
+				boxShadow: `inset 1px 1px 0 ${theme.palette.divider}`,
 				cursor: "pointer",
 				px: 1,
 				py: 0.5,
@@ -133,7 +139,7 @@ function CurrentDate({ onClick }: { onClick: () => void }) {
 			}}
 		>
 			{date}
-		</Typography>
+		</ButtonBase>
 	);
 }
 
@@ -144,6 +150,7 @@ export function TopBar() {
 	const dateRef = useRef<HTMLDivElement>(null);
 	const { openWindow } = useWindowManager();
 	const theme = useTheme();
+	const t = useTranslations("Settings");
 
 	const handleClockClick = () => {
 		setShowCalendar(false);
@@ -167,8 +174,9 @@ export function TopBar() {
 				left: 0,
 				right: 0,
 				height: 40,
-				backgroundColor: theme.palette.background.paper,
-				borderBottom: `1px solid ${theme.palette.divider}`,
+				backgroundColor: theme.palette.retro.surface,
+				borderBottom: `2px solid ${theme.palette.retro.ink}`,
+				boxShadow: theme.palette.retro.bevel,
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "space-between",
@@ -176,40 +184,44 @@ export function TopBar() {
 				zIndex: 9999,
 			}}
 		>
-			<Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+			<Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
+				<ButtonBase aria-label="Welcome" onClick={() => openWindow("welcome")} sx={{ width: 26, height: 26, bgcolor: "primary.main", color: "primary.contrastText", border: `1px solid ${theme.palette.retro.ink}`, boxShadow: theme.palette.retro.bevel, fontWeight: 700, fontSize: "0.65rem" }}>FR</ButtonBase>
 				<Typography
 					variant="body2"
 					sx={{
 						color: theme.palette.primary.main,
 						fontWeight: 700,
-						letterSpacing: "0.05em",
+						letterSpacing: "0.02em",
+						fontSize: "0.7rem",
 						display: { xs: "none", sm: "block" },
 					}}
 				>
-					{siteConfig.name}
+					FadlurOS <Box component="span" sx={{ fontWeight: 400, color: "text.secondary", display: { xs: "none", md: "inline" } }}>/ {siteConfig.name}</Box>
 				</Typography>
 				<Typography
 					variant="body2"
 					sx={{
 						color: theme.palette.primary.main,
 						fontWeight: 700,
-						letterSpacing: "0.05em",
+						letterSpacing: "0.02em",
+						fontSize: "0.7rem",
 						display: { xs: "block", sm: "none" },
 					}}
 				>
-					{siteConfig.name
-						.split(" ")
-						.map((n) => n[0])
-						.join("")}
+					FadlurOS
 				</Typography>
 			</Box>
 
 			<Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
 				<IconButton
+					aria-label={t("title")}
+					title={t("appearance")}
 					onClick={handleSettingsClick}
 					size="small"
 					sx={{
-						color: theme.palette.text.secondary,
+						color: theme.palette.text.primary,
+						border: `1px solid ${theme.palette.retro.ink}`,
+						boxShadow: theme.palette.retro.bevel,
 						"&:hover": {
 							backgroundColor: theme.palette.primaryLight,
 							color: theme.palette.primary.main,

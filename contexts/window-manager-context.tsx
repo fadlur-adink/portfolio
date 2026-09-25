@@ -22,7 +22,7 @@ const initialState: WindowManagerState = {
   nextZIndex: 1,
 };
 
-let appRegistry: Map<string, AppDefinition> = new Map();
+const appRegistry: Map<string, AppDefinition> = new Map();
 
 function windowReducer(
   state: WindowManagerState,
@@ -52,8 +52,8 @@ function windowReducer(
         isMaximized: false,
         isFocused: true,
         position: {
-          x: 100 + state.windows.length * 30,
-          y: 100 + state.windows.length * 30,
+          x: 156 + state.windows.length * 30,
+          y: 112 + state.windows.length * 30,
         },
         size: app.defaultSize,
         zIndex: state.nextZIndex,

@@ -15,6 +15,8 @@ export interface ColorScheme {
 		secondary: string;
 	};
 	divider: string;
+	desktop?: string;
+	accents?: string[];
 }
 
 export interface Settings {
@@ -25,13 +27,23 @@ export interface Settings {
 }
 
 export const defaultSettings: Settings = {
-	colorScheme: "purple",
+	colorScheme: "retro-pop",
 	language: "en",
 	fontSize: "medium",
-	fontFamily: "system",
+	fontFamily: "mono",
 };
 
 export const colorSchemes: ColorScheme[] = [
+	{
+		id: "retro-pop",
+		name: "Retro Pop",
+		primary: { main: "#8500d9", light: "#ead4ff", dark: "#6100a3" },
+		background: { default: "#efddff", paper: "#fffaff" },
+		text: { primary: "#321446", secondary: "#705781" },
+		divider: "#bea0d2",
+		desktop: "#8500eb",
+		accents: ["#b47aee", "#f13de2", "#2ac7c8", "#ffca49"],
+	},
 	{
 		id: "purple",
 		name: "Purple",

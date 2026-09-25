@@ -1,4 +1,6 @@
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+"use client";
+
+import { ListItemButton, ListItemIcon, ListItemText, useTheme } from "@mui/material";
 
 export function SidebarItem({
 	icon,
@@ -11,14 +13,19 @@ export function SidebarItem({
 	isActive: boolean;
 	onClick: () => void;
 }) {
+	const theme = useTheme();
 	return (
 		<ListItemButton
 			selected={isActive}
 			onClick={onClick}
 			sx={{
 				mx: 1,
-				borderRadius: 1,
+				borderRadius: "2px",
+				mb: 1,
+				border: "1px solid transparent",
 				"&.Mui-selected": {
+					borderColor: theme.palette.retro.ink,
+					boxShadow: theme.palette.retro.bevel,
 					backgroundColor: "primaryLight",
 					"&:hover": { backgroundColor: "primaryLight" },
 				},

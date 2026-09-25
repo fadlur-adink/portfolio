@@ -1,6 +1,8 @@
 "use client";
 
-import { Box, Typography, IconButton, Zoom } from "@mui/material";
+import { Box, IconButton, Zoom } from "@mui/material";
+import { useReducedMotion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { useTheme } from "@mui/material/styles";
 import { useWindowManager } from "@/contexts/window-manager-context";
 import { TransitionGroup } from "react-transition-group";
@@ -9,6 +11,8 @@ export function Dock() {
 	const { state, restoreWindow, getApp, minimizeWindow, focusWindow } =
 		useWindowManager();
 	const theme = useTheme();
+	const reduceMotion = useReducedMotion();
+	const t = useTranslations("Desktop");
 
 	const windows = state.windows;
 
@@ -32,6 +36,8 @@ export function Dock() {
 
 	return (
 		<Box
+			component="nav"
+			aria-label={t("taskbar")}
 			sx={{
 				position: "fixed",
 				bottom: 16,
@@ -40,11 +46,13 @@ export function Dock() {
 				display: "flex",
 				gap: 1,
 				padding: "8px 12px",
-				backgroundColor: `${theme.palette.background.paper}ee`,
-				backdropFilter: "blur(10px)",
-				borderRadius: "16px",
-				border: `1px solid ${theme.palette.divider}`,
-				boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+				backgroundColor: theme.palette.retro.surface,
+				borderRadius: "4px",
+				border: `2px solid ${theme.palette.retro.ink}`,
+				boxShadow: `${theme.palette.retro.shadow}, ${theme.palette.retro.bevel}`,
+				maxWidth: "calc(100vw - 32px)",
+				overflowX: "auto",
+				overflowY: "hidden",
 				zIndex: 9998,
 				transition: "width 0.3s ease",
 			}}
@@ -58,30 +66,33 @@ export function Dock() {
 						<Zoom
 							key={window.id}
 							in={true}
-							style={{ transitionDelay: "50ms" }}
+							timeout={reduceMotion ? 0 : 160}
 						>
 							<Box>
 								<IconButton
-									onClick={() =>
-										handleWindowClick(
-											window.id,
-											window.isMinimized,
-											window.isFocused,
-										)
-									}
+									aria-label={`${window.isMinimized ? t("restore") : window.isFocused ? t("minimize") : t("restore")} ${window.title}`}
+									aria-pressed={window.isFocused}
+									onPointerDown={(e) => {
+										if (e.button !== 0) return;
+										e.preventDefault();
+										handleWindowClick(window.id, window.isMinimized, window.isFocused);
+									}}
+									onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") {
+											e.preventDefault();
+											handleWindowClick(window.id, window.isMinimized, window.isFocused);
+										}
+									}}
 									sx={{
 										width: 48,
 										height: 48,
-										borderRadius: "12px",
+										borderRadius: "2px",
 										backgroundColor: isActive
 											? theme.palette.background.paper
 											: theme.palette.background.default,
-										border: `1px solid ${isActive ? theme.palette.primary.main : theme.palette.divider}`,
-										boxShadow: isActive
-											? `0 0 10px ${theme.palette.primary.main}40`
-											: "none",
-										transition:
-											"all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+										border: `2px solid ${theme.palette.retro.ink}`,
+										boxShadow: window.isFocused ? `inset 2px 2px 0 ${theme.palette.divider}` : theme.palette.retro.bevel,
+										transition: "transform 120ms steps(2)",
 										position: "relative",
 										"&:hover": {
 											backgroundColor:
@@ -102,12 +113,12 @@ export function Dock() {
 										<Box
 											sx={{
 												position: "absolute",
-												bottom: -6,
+												bottom: 3,
 												width: window.isFocused
 													? 12
 													: 4,
 												height: 4,
-												borderRadius: 12,
+												borderRadius: 0,
 												backgroundColor:
 													theme.palette.primary.main,
 											}}

@@ -1,49 +1,60 @@
-import { alpha, Box, Typography } from "@mui/material";
+"use client";
+
+import { alpha, Box, ButtonBase, Typography, useTheme } from "@mui/material";
 
 interface DesktopIconProps {
 	icon: React.ReactNode;
 	label: string;
+	index?: number;
 	onClick: () => void;
 }
 
-export function DesktopIcon({ icon, label, onClick }: DesktopIconProps) {
+export function DesktopIcon({ icon, label, index = 0, onClick }: DesktopIconProps) {
+	const theme = useTheme();
+	const retro = theme.palette.retro;
+	const accent = retro.accents[index % retro.accents.length];
 	return (
-		<Box
+		<ButtonBase
 			onClick={onClick}
-			onDoubleClick={onClick}
+			aria-label={label}
 			sx={{
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center",
 				justifyContent: "center",
-				width: 80,
-				height: 90,
+				width: { xs: 76, sm: 88 },
+				height: { xs: 76, sm: 86 },
 				cursor: "pointer",
-				borderRadius: "8px",
-				transition: "background-color 0.2s ease",
+				border: "1px solid transparent",
+				borderRadius: "2px",
+				transition: "transform 120ms steps(2)",
 				"&:hover": {
-					backgroundColor: (theme) =>
-						alpha(theme.palette.primary.main, 0.08),
+					backgroundColor: alpha(retro.desktopText, 0.12),
+					borderColor: alpha(retro.desktopText, 0.5),
+					"& .desktop-app-icon": { transform: "translateY(-3px)" },
 				},
 				"&:active": {
-					backgroundColor: "primaryLight",
+					transform: "translateY(2px)",
 				},
 			}}
 		>
 			<Box
+				className="desktop-app-icon"
 				sx={{
 					width: 48,
 					height: 48,
 					display: "flex",
 					alignItems: "center",
 					justifyContent: "center",
-					borderRadius: "12px",
-					backgroundColor: "background.paper",
-					border: (theme) => `1px solid ${theme.palette.divider}`,
+					borderRadius: "3px",
+					backgroundColor: accent,
+					border: `2px solid ${retro.ink}`,
+					boxShadow: `3px 3px 0 ${retro.ink}, ${retro.bevel}`,
+					transition: "transform 120ms steps(2)",
 					mb: 1,
 					"& svg": {
 						fontSize: 28,
-						color: "primary.main",
+						color: theme.palette.getContrastText(accent),
 					},
 				}}
 			>
@@ -52,11 +63,12 @@ export function DesktopIcon({ icon, label, onClick }: DesktopIconProps) {
 			<Typography
 				variant="caption"
 				sx={{
-					color: "text.primary",
+					color: retro.desktopText,
 					textAlign: "center",
-					fontSize: "0.75rem",
-					fontWeight: 500,
-					textShadow: "0 1px 2px rgba(0, 0, 0, 0.5)",
+					fontSize: "0.65rem",
+					fontWeight: 700,
+					backgroundColor: retro.desktop,
+					px: 0.5,
 					maxWidth: 76,
 					overflow: "hidden",
 					textOverflow: "ellipsis",
@@ -65,6 +77,6 @@ export function DesktopIcon({ icon, label, onClick }: DesktopIconProps) {
 			>
 				{label}
 			</Typography>
-		</Box>
+		</ButtonBase>
 	);
 }

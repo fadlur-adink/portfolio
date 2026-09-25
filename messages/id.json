@@ -11,6 +11,25 @@
     "reload": "Muat ulang halaman",
     "noScript": "JavaScript diperlukan untuk portofolio interaktif ini. Aktifkan JavaScript di browser Anda dan muat ulang halaman."
   },
+  "Desktop": {
+    "edition": "DESKTOP PRIBADI / SEJAK 2020",
+    "tagline": "Sedikit retro. Banyak kemungkinan.",
+    "hint": "Klik ikon. Buka jendela. Anggap saja rumah sendiri.",
+    "personalize": "Sesuaikan gayamu",
+    "appearanceHint": "Warna berbeda. Kepribadian yang sama.",
+    "openSettings": "Buka tampilan",
+    "noteTitle": "catatan-untukmu.txt",
+    "note": "Hal baik dimulai dari sedikit rasa ingin tahu.",
+    "explore": "Jelajahi proyek saya",
+    "status": "SEMUA SISTEM KREATIF",
+    "taskbar": "Aplikasi terbuka",
+    "minimize": "Minimalkan",
+    "maximize": "Maksimalkan",
+    "restore": "Pulihkan",
+    "close": "Tutup",
+    "ready": "Siap",
+    "resize": "Seret untuk mengubah ukuran"
+  },
   "Settings": {
     "title": "Pengaturan",
     "appearance": "Tampilan",
@@ -38,7 +57,14 @@
     "title": "Selamat Datang",
     "subtitle": "Pengembang Frontend",
     "description": "Bersemangat dalam menciptakan pengalaman web yang indah dan fungsional. Klik ikon desktop untuk menjelajahi portofolio saya.",
-    "openAbout": "Buka Tentang Saya"
+    "openAbout": "Tentang saya",
+    "hello": "HALO, DUNIA!",
+    "intro": "Pengembang yang penuh rasa ingin tahu dan suka berkarya.",
+    "role": "Pengembang Front End & Mobile",
+    "currently": "Sedang mengembangkan",
+    "projects": "Jelajahi proyek",
+    "contact": "Mari ngobrol",
+    "footer": "Dibangun dengan rasa ingin tahu. Jelajahi dengan caramu."
   },
   "Projects": {
     "title": "Proyek"

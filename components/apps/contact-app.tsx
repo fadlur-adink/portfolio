@@ -1,18 +1,22 @@
+"use client";
+
 import { siteConfig } from "@/config/site";
-import ChatIcon from "@mui/icons-material/Chat";
+import { useTranslations } from "next-intl";
 import EmailIcon from "@mui/icons-material/Email";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import { Box, Grid, Link, Typography } from "@mui/material";
+import { Box, Grid, Link, Typography, useTheme } from "@mui/material";
 
 export function ContactApp() {
+	const theme = useTheme();
+	const t = useTranslations("Contact");
 	return (
-		<Box sx={{ p: 3 }}>
+		<Box sx={{ p: 3, overflowWrap: "anywhere", "& .MuiGrid-root": { minWidth: 0 }, "& .MuiSvgIcon-root": { flexShrink: 0 } }}>
 			<Typography
 				variant="h5"
 				sx={{ color: "primary.main", mb: 3, fontWeight: 700 }}
 			>
-				Contact
+				{t("title")}
 			</Typography>
 
 			<Grid container spacing={4}>
@@ -38,11 +42,11 @@ export function ContactApp() {
 				<Grid size={{ xs: 12, md: 6 }}>
 					<Box
 						sx={{
-							p: 3,
-							border: (theme) =>
-								`1px solid ${theme.palette.divider}`,
-							borderRadius: "8px",
-							backgroundColor: "background.paper",
+							p: 2,
+							border: `2px solid ${theme.palette.retro.ink}`,
+							borderRadius: "2px",
+							boxShadow: theme.palette.retro.shadow,
+							backgroundColor: theme.palette.retro.surface,
 						}}
 					>
 						<Typography
