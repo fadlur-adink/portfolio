@@ -185,7 +185,9 @@ export function TopBar() {
 			}}
 		>
 			<Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
-				<ButtonBase aria-label="Welcome" onClick={() => openWindow("welcome")} sx={{ width: 26, height: 26, bgcolor: "primary.main", color: "primary.contrastText", border: `1px solid ${theme.palette.retro.ink}`, boxShadow: theme.palette.retro.bevel, fontWeight: 700, fontSize: "0.65rem" }}>FR</ButtonBase>
+				<ButtonBase aria-label="Welcome" onClick={() => openWindow("welcome")} sx={{ width: 26, height: 26, display: "grid", placeItems: "center" }}>
+					<img src="/images/logo-192.png" alt="FadlurOS" width={24} height={24} style={{ imageRendering: "pixelated", objectFit: "contain" }} />
+				</ButtonBase>
 				<Typography
 					variant="body2"
 					sx={{

@@ -75,7 +75,12 @@ export function InitialLoading({ children }: { children: ReactNode }) {
           } as CSSProperties}
         >
           <div className="initial-loading-panel">
-            <div className="initial-loading-logo" aria-hidden="true">FR</div>
+            <img
+              className="initial-loading-logo"
+              src="/images/logo.png"
+              alt=""
+              aria-hidden="true"
+            />
             <h1>FadlurOS</h1>
             <p className="initial-loading-subtitle">{t("title")}</p>
             <div className="initial-loading-progress">

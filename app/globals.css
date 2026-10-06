@@ -39,16 +39,12 @@ html {
 }
 
 .initial-loading-logo {
-  display: grid;
-  place-items: center;
+  display: block;
   width: 72px;
   height: 72px;
   margin: 0 auto 24px;
-  border: 2px solid var(--retro-ink);
-  border-radius: 2px;
-  box-shadow: 4px 4px 0 var(--retro-ink);
-  color: var(--loading-accent);
-  font: 700 26px monospace;
+  object-fit: contain;
+  image-rendering: pixelated;
 }
 
 .initial-loading h1 {
