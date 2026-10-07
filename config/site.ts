@@ -3,6 +3,20 @@ import type { NavItem } from "@/types";
 const isProd = process.env.NODE_ENV === "production";
 const repoName = "portfolio";
 
+// Deployment target is decided at build time via NEXT_PUBLIC_BASE_PATH:
+//  - VPS (starnutlabs.id, served from web root): unset/""  -> `npm run build`
+//  - GitHub Pages (fadlur-adink.github.io/portfolio): "/portfolio" -> `npm run build:pages`
+export const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+/** Prefix an absolute public path for the current deploy target. */
+export const pub = (p: string) => `${basePath}${p}`;
+
+const hostUrl = !isProd
+	? "http://localhost:3000"
+	: basePath === "/portfolio"
+		? `https://fadlur-adink.github.io/${repoName}`
+		: "https://starnutlabs.id";
+
 export const siteConfig = {
 	name: "Fadlur Rahman",
 	title: "Fadlur Rahman | Front-end Developer",
@@ -10,10 +24,8 @@ export const siteConfig = {
 		"Portfolio of Fadlur Rahman — a front-end developer with 4+ years of experience building modern web and mobile applications with React, Next.js, and React Native. Based in Jakarta, Indonesia.",
 	email: "fadlur612@gmail.com",
 	discord: "Fadlur#1234",
-	url: isProd
-		? `https://fadlur-adink.github.io/${repoName}`
-		: "http://localhost:3000",
-	ogImage: "/images/hero.png",
+	url: hostUrl,
+	ogImage: `${hostUrl}/images/hero.png`,
 	keywords: [
 		"Fadlur Rahman",
 		"front-end developer",

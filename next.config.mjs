@@ -2,14 +2,16 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
-const isProd = process.env.NODE_ENV === "production";
-const repoName = "portfolio"; // Must match config/site.ts repoName
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
-  basePath: isProd ? `/${repoName}` : "",
-  assetPrefix: isProd ? `/${repoName}/` : "",
+  // Target is decided at build time (see config/site.ts):
+  //   VPS root   -> npm run build        (basePath "")
+  //   GH Pages   -> npm run build:pages  (basePath "/portfolio")
+  basePath,
+  assetPrefix: basePath ? `${basePath}/` : "",
   images: {
     unoptimized: true,
   },

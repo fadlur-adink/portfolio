@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getLocale, getMessages } from "next-intl/server";
 import ThemeRegistry from "@/lib/theme-registry";
-import { siteConfig } from "@/config/site";
+import { pub, siteConfig } from "@/config/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -53,11 +53,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" },
-      { url: "/images/logo-192.png", sizes: "192x192", type: "image/png" },
+      { url: pub("/favicon.ico"), sizes: "48x48", type: "image/x-icon" },
+      { url: pub("/images/logo-192.png"), sizes: "192x192", type: "image/png" },
     ],
-    apple: "/images/apple-touch-icon.png",
-    other: [{ rel: "icon", url: "/images/logo-192.png", type: "image/png", sizes: "192x192" }],
+    apple: pub("/images/apple-touch-icon.png"),
   },
 };
 

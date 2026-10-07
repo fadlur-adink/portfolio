@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import MuiLink from "@mui/material/Link";
+import { pub } from "@/config/site";
 
 export default function NotFound() {
   return (
@@ -28,7 +29,7 @@ export default function NotFound() {
           The page you are looking for does not exist or has been moved.
         </Typography>
         <MuiLink
-          href="/"
+          href={pub("/")}
           underline="none"
           sx={{
             display: "inline-block",

@@ -5,7 +5,7 @@ import { Box, ButtonBase, Typography, ClickAwayListener, IconButton, keyframes }
 import { useLocale, useTranslations } from "next-intl";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useTheme } from "@mui/material/styles";
-import { siteConfig } from "@/config/site";
+import { pub, siteConfig } from "@/config/site";
 import { useWindowManager } from "@/contexts/window-manager-context";
 import AnalogClock from "./analog-clock";
 import Calendar from "./calendar";
@@ -186,7 +186,7 @@ export function TopBar() {
 		>
 			<Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
 				<ButtonBase aria-label="Welcome" onClick={() => openWindow("welcome")} sx={{ width: 26, height: 26, display: "grid", placeItems: "center" }}>
-					<img src="/images/logo-192.png" alt="FadlurOS" width={24} height={24} style={{ imageRendering: "pixelated", objectFit: "contain" }} />
+					<img src={pub("/images/logo-192.png")} alt="FadlurOS" width={24} height={24} style={{ imageRendering: "pixelated", objectFit: "contain" }} />
 				</ButtonBase>
 				<Typography
 					variant="body2"

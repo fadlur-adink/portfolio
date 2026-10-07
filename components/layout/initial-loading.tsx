@@ -4,6 +4,7 @@ import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useLocale, useTranslations } from "next-intl";
 import { useSettings } from "@/contexts/settings-context";
+import { pub } from "@/config/site";
 
 export function InitialLoading({ children }: { children: ReactNode }) {
   const { settings, isHydrated } = useSettings();
@@ -77,7 +78,7 @@ export function InitialLoading({ children }: { children: ReactNode }) {
           <div className="initial-loading-panel">
             <img
               className="initial-loading-logo"
-              src="/images/logo.png"
+              src={pub("/images/logo.png")}
               alt=""
               aria-hidden="true"
             />
